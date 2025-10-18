@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>木下 卓充 | pieces</title>
+  <meta name="description" content="柏の美容室pieces スタイリスト 木下卓充。似合わせ・メンズカット・パーマが得意。丁寧な施術で扱いやすい髪へ。">
+  <link rel="icon" href="../images/logo.jpeg" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    /* ===== スタッフ詳細ページ専用 ===== */
+    .staff-header{padding:24px 0 0}
+    .staff-head{margin-top:10px}
+    .chip{
+      display:inline-block;background:#e6f5f4;color:#17807B;border:1px solid #bfe6e3;
+      padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700
+    }
+    .staff-name{
+      margin:10px 0 0;
+      display:inline-block;
+      padding-bottom:5px;
+      font-size:clamp(20px,2.5vw,26px);
+      font-weight:600;
+      border-bottom:2px solid var(--accent);
+      letter-spacing:0.03em;
+    }
+    .staff-name .kana{
+      margin-left:10px;
+      font-size:.9em;
+      color:var(--muted);
+      font-weight:500;
+    }
+    /* 名前の下に小さく資格・肩書きを出す */
+    .staff-qual{
+      font-size:14px;
+      color:#17807B;
+      font-weight:500;
+      margin-top:4px;
+      letter-spacing:0.04em;
+    }
+
+    .staff-profile{
+      display:grid;
+      grid-template-columns:420px 1fr;
+      gap:24px;
+      align-items:start;
+      margin-top:12px;
+    }
+    .profile-img{
+      border-radius:16px;
+      border:1px solid var(--line);
+      box-shadow:0 8px 24px rgba(23,128,123,.08);
+    }
+    .profile-card{
+      border:1px solid #e7f2f1;
+      border-radius:18px;
+      overflow:hidden;
+      background:var(--paper);
+    }
+    .profile-table{width:100%; border-collapse:collapse}
+    .profile-table th,.profile-table td{
+      padding:14px 16px;
+      border-bottom:1px dashed var(--line);
+      text-align:left;
+      vertical-align:top;
+    }
+    .profile-table th{
+      width:120px;
+      background:#f6fbfb;
+      color:#0b4b49;
+      font-weight:700;
+    }
+
+    .badges{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      padding:14px 18px;
+    }
+    .badge{
+      background:#e6f5f4;
+      color:#17807B;
+      border:1px solid #bfe6e3;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:700;
+    }
+
+    .greet{
+      margin:16px 18px 20px;
+      background:#f7fcfc;
+      border:1px solid #e1f2f1;
+      border-radius:14px;
+      padding:16px;
+    }
+
+    .btn.back{margin:8px 0 0; display:inline-block}
+
+    @media (max-width:900px){
+      .staff-profile{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 共通ヘッダー -->
+  <header class="header">
+    <div class="wrap nav">
+      <a class="brand" href="../index.html#top" aria-label="トップへ">
+        <img src="../images/logo.jpeg" alt="pieces ロゴ" width="48" height="48" loading="eager" />
+        <span>pieces</span>
+      </a>
+      <nav class="menu" aria-label="主要ナビゲーション">
+        <a href="../index.html#concept">concept</a>
+        <a href="../index.html#menu">menu</a>
+        <a href="../index.html#staff">staff</a>
+        <a href="../blog/index.html">blog</a>
+        <a href="../index.html#gallery">gallery</a>
+        <a href="../index.html#access">access</a>
+        <a href="../index.html#contact">contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- スタッフ見出し -->
+  <header class="staff-header wrap">
+    <a class="btn back" href="../index.html#staff">← スタッフ一覧に戻る</a>
+
+    <div class="staff-head">
+      <span class="chip">スタイリスト</span>
+      <h1 class="staff-name">
+        木下 卓充
+        <span class="kana">(キノシタ タクミ)</span>
+      </h1>
+      <p class="staff-qual">ヘアケアマイスター / パーマデザインアドバイザー</p>
+
+      <div class="cta" style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap">
+        <a class="btn fill" href="https://line.me/R/ti/p/@vtd8113w" target="_blank" rel="noopener">LINEで予約</a>
+        <a class="btn" href="https://www.instagram.com/kinopi_by_pieces" target="_blank" rel="noopener">@kinopi_by_pieces</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 本文 -->
+  <main class="wrap">
+    <div class="staff-profile">
+      <img class="profile-img" src="../images/staff2.jpg" alt="木下 卓充" width="800" height="1000" loading="lazy" />
+
+      <div class="profile-card">
+        <table class="profile-table" aria-label="プロフィール">
+          <tr>
+            <th scope="row">生年月日</th>
+            <td>1991年5月20日</td>
+          </tr>
+          <tr>
+            <th scope="row">血液型</th>
+            <td>O型</td>
+          </tr>
+          <tr>
+            <th scope="row">趣味</th>
+            <td>映画 / サウナ / グルメ巡り</td>
+          </tr>
+        </table>
+
+        <div class="badges" aria-label="得意ジャンル">
+          <span class="badge">似合わせカット</span>
+          <span class="badge">メンズカット</span>
+          <span class="badge">パーマ</span>
+          <span class="badge">ナチュラルカラー</span>
+        </div>
+
+        <div class="greet">
+          <p>
+            こんにちは、木下です。お客様一人ひとりの骨格や雰囲気に合わせて、毎日扱いやすく再現しやすいスタイルをご提案します。
+          </p>
+          <p>
+            パーマや質感づくりが得意です。朝のスタイリングがラクになるコツもお伝えしますので、ぜひご相談ください。
+          </p>
+        </div>
+
+        <p class="small muted" style="margin:0 18px 18px">
+          ※担当のご予約は <a href="https://line.me/R/ti/p/@vtd8113w" target="_blank" rel="noopener">LINE</a> からどうぞ。
+        </p> <div style="text-align:center; margin:24px 0 10px;">
+        <a class="btn back" href="../index.html#staff">← スタッフ一覧に戻る</a>
+      </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap"><p>© pieces hair.</p></div>
+  </footer>
+</body>
+</html>

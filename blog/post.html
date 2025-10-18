@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>blog post | pieces</title>
+<link rel="icon" href="../images/logo.jpeg">
+<link rel="stylesheet" href="../styles.css">
+<style>
+.article img{max-width:100%;height:auto;border-radius:12px}
+.article h1{font-size:24px;margin:10px 0}
+.article .meta{color:var(--muted);font-size:12px;margin-bottom:16px}
+</style>
+</head><body>
+<header class="header"><div class="wrap nav">
+  <a class="brand" href="../#top"><img src="../images/logo.jpeg" alt="" width="40" height="40"><span>pieces hair</span></a>
+  <nav class="menu"><a href="../#concept">concept</a><a href="../#menu">menu</a><a href="../#staff">staff</a><a href="./">blog</a></nav>
+</div></header>
+
+<main class="wrap section">
+  <article id="post" class="article card"></article>
+  <p style="margin-top:14px"><a class="btn" href="./">← ブログ一覧へ</a></p>
+</main>
+
+<footer><div class="wrap"><p>© pieces hair.</p></div></footer>
+
+<script>
+const KEY="OD6b2kmbP5JvTqJgejktTJvwnKUJpLV03fU";
+const EP ="https://pieces.microcms.io/api/v1/blog";
+const id=new URL(location.href).searchParams.get('id');
+
+async function load(){
+  if(!id){document.getElementById('post').innerHTML='<p>記事が見つかりません。</p>';return;}
+  try{
+    const r=await fetch(`${EP}/${id}`,{headers:{'X-MICROCMS-API-KEY':KEY}});
+    const p=await r.json();
+    document.title = `${p.title} | pieces`;
+    document.getElementById('post').innerHTML = `
+      ${p.eyecatch?`<img src="${p.eyecatch.url}" alt="${p.title}" style="margin-bottom:12px">`:``}
+      <h1>${p.title}</h1>
+      <div class="meta">${(p.publishedAt||p.createdAt||"").slice(0,10)}　${p.category?` / ${p.category}`:''}</div>
+      <div class="body">${p.body??""}</div>
+    `;
+  }catch(e){
+    console.error(e);
+    document.getElementById('post').innerHTML='<p>読み込みに失敗しました。</p>';
+  }
+}
+load();
+</script>
+</body></html>
