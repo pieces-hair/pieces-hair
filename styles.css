@@ -3,7 +3,7 @@
   --ink:#1c1c1c; --muted:#6f6f6f; --bg:#fff; --bg-soft:#fafafa;
   --line:#ececec; --paper:#fff;
   --accent:#1F9AA0; --accent-darker:#17807B;
-  --headerH:96px; /* 固定ヘッダーの高さ（PC） */
+  --headerH:90px; /* 固定ヘッダー（PC） */
 }
 
 /* ベース */
@@ -16,11 +16,8 @@ img{max-width:100%; height:auto; display:block}
 a{color:var(--accent); text-decoration:none}
 .wrap{max-width:1120px; margin:auto; padding:0 22px}
 
-/* アンカー位置のずれ防止（固定ヘッダー分オフセット & スムーススクロール） */
-html{
-  scroll-behavior:smooth;
-  scroll-padding-top:calc(var(--headerH) + 12px);
-}
+/* アンカー位置のずれ防止 */
+html{ scroll-behavior:smooth; scroll-padding-top:calc(var(--headerH) + 12px); }
 .section{padding:72px 0; border-top:1px solid var(--line); scroll-margin-top:calc(var(--headerH) + 12px);}
 .section.alt{background:var(--bg-soft)}
 .section h2{
@@ -37,11 +34,12 @@ html{
   position:sticky; top:0; z-index:50;
   background:rgba(255,255,255,.92); backdrop-filter:blur(10px);
   border-bottom:1px solid var(--line);
+  overflow:visible;
 }
-.nav{display:flex; align-items:center; justify-content:space-between; height:90px; padding-right:20px;}
-.brand{display:flex; align-items:center; gap:14px; margin-left:-20px;}
-.brand img{width:180px; height:auto; border-radius:16px;}
-.brand span{font-size:26px; font-weight:700; color:#000; letter-spacing:.03em;}
+.nav{display:flex; align-items:center; justify-content:space-between; height:90px; padding:0 20px;}
+.brand{display:flex; align-items:center; gap:14px; margin-left:0;}
+.brand img{max-height:72px; width:auto; object-fit:contain; border-radius:12px;}
+.brand span{font-size:24px; font-weight:700; color:#000; letter-spacing:.02em;}
 .menu{display:flex; gap:22px;}
 .menu a{color:#000; font-weight:500; position:relative; padding-bottom:6px;}
 .menu a::after{
@@ -74,10 +72,7 @@ html{
 
 /* スライドショー */
 .slideshow{position:relative; width:100%; overflow:hidden; border-radius:12px}
-.slideshow img{
-  position:absolute; inset:0; width:100%; height:auto; object-fit:cover;
-  opacity:0; transition:opacity 1.2s ease-in-out;
-}
+.slideshow img{position:absolute; inset:0; width:100%; height:auto; object-fit:cover; opacity:0; transition:opacity 1.2s ease-in-out;}
 .slideshow img.active{opacity:1; z-index:1}
 
 /* ===== カード ===== */
@@ -145,22 +140,14 @@ footer a{color:#fff; text-decoration:underline}
 
 /* ===== スマホ調整 ===== */
 @media (max-width:720px){
-  :root{ --headerH:72px; } /* スクロールのオフセットも自動調整 */
+  :root{ --headerH:72px; } /* アンカー補正も自動で追従 */
 
-  /* ヘッダー：ロゴとナビを2段にして重なり回避 */
-  .nav{
-    flex-wrap:wrap; align-items:flex-start; height:auto; padding:8px 12px;
-  }
-  .brand{
-    flex:1 0 100%; gap:10px; margin-left:0;
-  }
-  .brand img{width:56px; height:56px}
+  .nav{flex-wrap:wrap; align-items:flex-start; height:auto; padding:8px 12px;}
+  .brand{flex:1 0 100%; gap:10px; margin-left:0;}
+  .brand img{max-height:56px}
   .brand span{font-size:20px}
-  .menu{
-    flex:1 0 100%; display:flex; flex-wrap:wrap; gap:14px; margin-top:6px; justify-content:flex-start;
-  }
+  .menu{flex:1 0 100%; display:flex; flex-wrap:wrap; gap:14px; margin-top:6px; justify-content:flex-start;}
 
-  /* カードを1列に */
   .cards{grid-template-columns:1fr}
   .cta-row{justify-content:center}
 }
@@ -169,171 +156,44 @@ footer a{color:#fff; text-decoration:underline}
 a:focus,button:focus,.btn:focus{
   outline:3px solid color-mix(in srgb, var(--accent) 50%, #fff 50%);
   outline-offset:2px;
-}/* === ロゴ位置・サイズ調整：はみ出し防止＆中央寄せバランス === */
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-left: 0; /* 左端からのはみ出しを防止 */
 }
 
-.brand img {
-  width: 140px;  /* 180px → 少し小さめに調整（視認性は維持） */
-  height: auto;
-  border-radius: 12px;
-}
-
-.brand span {
-  font-size: 24px;
-  font-weight: 700;
-  color: #000;
-  letter-spacing: 0.02em;
-}
-
-/* スマホ時はさらにバランス調整 */
-@media (max-width: 720px) {
-  .brand img {
-    width: 64px;   /* ロゴが欠けないよう適正化 */
-    height: 64px;
-  }
-  .brand span {
-    font-size: 20px;
-  }
-  .nav {
-    padding-left: 12px; /* 左余白を確保 */
-  }
-}/* --- 仕上げ：ロゴとヘッダーの安定化 --- */
-
-/* 1) ロゴサイズの上限をヘッダー内に収める */
-.header { overflow: visible; }             /* 念のための保険 */
-.nav { align-items: center; height: 90px;} /* ヘッダー高さを明示 */
-.brand img{
-  max-height: 72px;        /* ヘッダー内に確実に収まる上限 */
-  width: auto;             /* 縦優先で比率維持 */
-  object-fit: contain;
-}
-
-/* 2) 横幅狭い時の欠け・重なり防止（スマホ） */
-@media (max-width: 720px){
-  .nav{
-    flex-wrap: wrap;
-    height: auto;
-    padding: 8px 12px;      /* 左右に余白を確保（欠け防止） */
-  }
-  .brand{
-    flex: 1 0 100%;         /* 1段目はロゴだけ */
-    margin-left: 0;         /* 念のためリセット */
-    gap: 10px;
-  }
-  .brand img{
-    max-height: 56px;       /* スマホは少し低め */
-  }
-  .menu{
-    flex: 1 0 100%;         /* 2段目にメニュー */
-    gap: 14px;
-    margin-top: 6px;
-  }
-}
-
-/* 3) セクション見出しがヘッダーに隠れない用（滑らかスクロール時のオフセット） */
-:root{ --headerH: 90px; }
-html{ scroll-padding-top: calc(var(--headerH) + 12px); }
-.section{ scroll-margin-top: calc(var(--headerH) + 12px); }
-@media (max-width:720px){
-  :root{ --headerH: 72px; }
-}/* ===== staff profile ===== */
-.profile{
-  display:grid;
-  grid-template-columns: 320px 1fr;
-  gap:24px;
-  align-items:start;
-}
+/* ===== staff profile ===== */
+.profile{display:grid; grid-template-columns:320px 1fr; gap:24px; align-items:start;}
 .profile .portrait{
-  border-radius:14px;
-  border:1px solid var(--line);
-  box-shadow:0 10px 24px rgba(0,0,0,.06);
-  width:100%;
-  max-width:320px;
+  border-radius:14px; border:1px solid var(--line); box-shadow:0 10px 24px rgba(0,0,0,.06);
+  width:100%; max-width:320px;
 }
 .bio-table{
-  width:100%;
-  border:1px solid #e7f2f1;
-  border-radius:14px;
-  overflow:hidden;
-  background:#fff;
+  width:100%; border:1px solid #e7f2f1; border-radius:14px; overflow:hidden; background:#fff;
   box-shadow:0 8px 20px rgba(23,128,123,.08);
 }
-.bio-table th,
-.bio-table td{
-  padding:14px 16px;
-  vertical-align:middle;
-  line-height:1.7;
-}
+.bio-table th,.bio-table td{padding:14px 16px; vertical-align:middle; line-height:1.7;}
 .bio-table th{
-  width:9em;
-  background:rgba(31,154,160,.10); /* piecesカラーのやさしい帯 */
-  color:#0d4f52;
-  font-weight:600;
-  text-align:left;
+  width:9em; background:rgba(31,154,160,.10); color:#0d4f52; font-weight:600; text-align:left;
   border-right:1px solid rgba(31,154,160,.18);
 }
-.bio-table tr+tr td,
-.bio-table tr+tr th{ border-top:1px dashed #e6f3f2; }
+.bio-table tr+tr td,.bio-table tr+tr th{ border-top:1px dashed #e6f3f2; }
 
 .tags{ display:flex; flex-wrap:wrap; gap:8px; }
 .tag{
-  display:inline-block;
-  padding:6px 10px;
-  border-radius:999px;
-  background:rgba(31,154,160,.15);
-  color:#156a70;
-  font-size:12px;
-  font-weight:600;
+  display:inline-block; padding:6px 10px; border-radius:999px;
+  background:rgba(31,154,160,.15); color:#156a70; font-size:12px; font-weight:600;
   border:1px solid rgba(31,154,160,.28);
 }
+.greeting{ margin-top:20px; padding:18px 20px; border:1px dashed #d9eeed; border-radius:14px; background:#fafefe; }
 
-.greeting{
-  margin-top:20px;
-  padding:18px 20px;
-  border:1px dashed #d9eeed;
-  border-radius:14px;
-  background:#fafefe;
+/* staff header（タイトル/名前/フリガナ） */
+.staff-header{ margin-bottom:18px; display:flex; flex-direction:column; align-items:flex-start; }
+.staff-title{
+  display:inline-block; background:rgba(31,154,160,.15); color:#17807B; font-size:14px;
+  font-weight:600; padding:4px 10px; border-radius:999px; margin-bottom:8px;
 }
+.staff-name{ font-size:30px; font-weight:700; letter-spacing:.03em; color:#000; margin:0; }
+.staff-ruby{ font-size:14px; color:#6f6f6f; margin-top:4px; letter-spacing:.08em; }
 
-/* モバイル */
+/* モバイル（プロフィール） */
 @media (max-width:900px){
   .profile{ grid-template-columns:1fr; }
   .profile .portrait{ max-width:100%; }
-/* ===== staff name + title + ruby（縦並びバージョン） ===== */
-.staff-header{
-  margin-bottom:18px;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-}
-
-.staff-title{
-  display:inline-block;
-  background:rgba(31,154,160,.15);
-  color:#17807B;
-  font-size:14px;
-  font-weight:600;
-  padding:4px 10px;
-  border-radius:999px;
-  margin-bottom:8px;
-}
-
-.staff-name{
-  font-size:30px;
-  font-weight:700;
-  letter-spacing:0.03em;
-  color:#000;
-  margin:0;
-}
-
-.staff-ruby{
-  font-size:14px;
-  color:#6f6f6f;
-  margin-top:4px;
-  letter-spacing:0.08em;
 }
