@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>柏の美容室 pieces｜美髪ケアと丁寧なカウンセリング</title>
 
-  <!-- ✅ Google Search Console（あなたのコードに置き換え済み） -->
+  <!-- ✅ Google Search Console -->
   <meta name="google-site-verification" content="cjun3mmi1J65vA858rBykbfueM-u9NrwoFIHAeCoc-Y" />
 
   <!-- ✅ 基本SEO -->
@@ -20,7 +20,6 @@
   <meta property="og:title" content="柏の美容室 pieces｜美髪ケアと丁寧なカウンセリング" />
   <meta property="og:description" content="髪の悩みに寄り添うカウンセリングと美髪ケア。柏の美容室piecesで“扱いやすく綺麗な髪”を叶えませんか？" />
   <meta property="og:url" content="https://pieces-hair.github.io/pieces-hair/" />
-  <!-- OGP画像は images/ogp.jpg を用意してね（1200×630） -->
   <meta property="og:image" content="https://pieces-hair.github.io/pieces-hair/images/ogp.jpg" />
 
   <!-- ✅ X(Twitter)カード -->
@@ -34,21 +33,15 @@
   <meta name="format-detection" content="telephone=no" />
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- ⭐ 固定ヘッダーのアンカーずれ防止（CSS変数をJSで更新） -->
+  <!-- ⭐ 固定ヘッダーのアンカーずれ防止 -->
   <style>
     :root{ --headerH: 96px; }
     html{ scroll-behavior:smooth; scroll-padding-top: calc(var(--headerH) + 12px); }
     .section{ scroll-margin-top: calc(var(--headerH) + 12px); }
-
-    /* メニュー：金額右寄せ（styles.css側でもOK。ここに置くと確実） */
-    #menu .card ul{ list-style:none; padding:0; margin:0; }
     #menu .card li{
-      display:flex; justify-content:space-between; align-items:baseline;
-      border-bottom:1px dotted #e5e5e5; padding:6px 0; font-size:16px; line-height:1.8;
+      display:flex; justify-content:space-between; border-bottom:1px dotted #eee; padding:6px 0;
     }
-    #menu .card li .price{ flex-shrink:0; width:90px; text-align:right; }
-
-    /* ヒーロー：スライドの基本（予防的に） */
+    #menu .price{ flex-shrink:0; width:90px; text-align:right; }
     .slideshow{ position:relative; width:100%; overflow:hidden; border-radius:12px; }
     .slideshow img{ position:absolute; inset:0; width:100%; height:auto; object-fit:cover; opacity:0; transition:opacity 1.2s ease-in-out; }
     .slideshow img.active{ opacity:1; z-index:1; }
@@ -56,198 +49,111 @@
 </head>
 
 <body>
-<!-- ===== ヘッダー ===== -->
 <header class="header">
   <div class="wrap nav">
-    <a class="brand" href="#top" aria-label="トップへ">
-      <img src="images/logo.jpeg" alt="pieces ロゴ" width="48" height="48" loading="eager" />
-      <span>pieces</span>
-    </a>
-    <nav class="menu" aria-label="主要ナビゲーション">
-      <a href="#concept">concept</a>
-      <a href="#menu">menu</a>
-      <a href="#staff">staff</a>
-      <a href="blog/index.html">blog</a>
-      <a href="#gallery">gallery</a>
-      <a href="#contact">contact</a>
-      <a href="#access">access</a>
+    <a class="brand" href="#top"><img src="images/logo.jpeg" alt="pieces ロゴ" width="48" height="48"><span>pieces</span></a>
+    <nav class="menu">
+      <a href="#concept">concept</a><a href="#menu">menu</a><a href="#staff">staff</a>
+      <a href="blog/index.html">blog</a><a href="#gallery">gallery</a>
+      <a href="#contact">contact</a><a href="#access">access</a>
     </nav>
   </div>
 </header>
 
 <main id="top" class="wrap">
-  <!-- ===== HERO ===== -->
-  <section class="hero" aria-label="ヒーロー">
+  <!-- HERO -->
+  <section class="hero">
     <div class="hero-txt">
       <h1>貴方の綺麗を引き出す<br>お悩み解決に特化した<br>パーソナルサロン</h1>
-      <p class="muted">柏駅徒歩10分　初めての方も安心のカウンセリングと、翌日からも扱いやすいヘアをご提案</p>
+      <p class="muted">柏駅徒歩10分　初めての方も安心のカウンセリングと翌日から扱いやすいヘアをご提案</p>
       <div class="cta cta-row">
-        <a class="btn fill" href="https://line.me/R/ti/p/@vtd8113w" target="_blank" rel="noopener">LINEで予約</a>
+        <a class="btn fill" href="https://line.me/R/ti/p/@vtd8113w" target="_blank">LINEで予約</a>
         <a class="btn" href="tel:0471938458">電話 04-7193-8458</a>
-        <a class="btn" href="https://www.instagram.com/pieces_hairsalon" target="_blank" rel="noopener">@pieces_hairsalon</a>
+        <a class="btn" href="https://www.instagram.com/pieces_hairsalon" target="_blank">@pieces_hairsalon</a>
       </div>
     </div>
-
-    <div class="hero-img slideshow" aria-label="店内写真スライド">
-      <img src="images/hero1.jpeg" alt="店内写真1" class="active" />
-      <img src="images/hero2.jpeg" alt="店内写真2" />
-      <img src="images/hero3.jpeg" alt="店内写真3" />
+    <div class="hero-img slideshow">
+      <img src="images/hero1.jpeg" alt="店内1" class="active">
+      <img src="images/hero2.jpeg" alt="店内2">
+      <img src="images/hero3.jpeg" alt="店内3">
     </div>
   </section>
 
-  <!-- ===== CONCEPT ===== -->
-  <section id="concept" class="section alt" aria-label="コンセプト">
+  <!-- CONCEPT -->
+  <section id="concept" class="section alt">
     <h2>concept</h2>
-    <p class="muted" style="color:#000;font-size:18px;line-height:1.8;font-weight:500;margin-bottom:10px">
-      ~ 髪に向き合うことであなたの人生の一部を彩る ~<br>
-      「どのサロンに行ってもなんか違う」そのモヤモヤ、終わりにしませんか？<br>
-      流行の前に“あなたに似合う”を見つける。悩みには必ず原因があります。<br>
-      その原因を一緒に見つけて解決する——それが pieces の考えるデザイン。<br>
-      あなたの人生を彩るパズルの一片でありたい。それが “pieces” です。
-    </p>
+    <p>~ 髪に向き合うことであなたの人生の一部を彩る ~<br>
+    「どのサロンに行ってもなんか違う」そのモヤモヤ終わりにしませんか？<br>
+    あなたのデザインを一緒に見つける。それが pieces の考えるデザインです。</p>
   </section>
 
-  <!-- ===== MENU ===== -->
-  <section id="menu" class="section" aria-label="メニュー">
+  <!-- MENU -->
+  <section id="menu" class="section">
     <h2>menu</h2>
     <div class="cards">
-
-      <!-- CUT -->
-      <div class="card">
-        <strong>cut</strong>
-        <ul>
-          <li>cut <span class="price">¥5,500</span></li>
-          <li>スクール CUT <span class="price">¥4,800</span></li>
-          <li>チャイルド CUT <span class="price">¥3,500</span></li>
-        </ul>
-      </div>
-
-      <!-- COLOR -->
-      <div class="card">
-        <strong>color</strong>
-        <ul>
-          <li>おしゃれ染め <span class="price">¥7,700</span></li>
-          <li>白髪染め <span class="price">¥6,500</span></li>
-          <li>ダブルカラー <span class="price">¥14,000〜</span></li>
-          <li>ポイントカラー <span class="price">¥4,000〜</span></li>
-        </ul>
-      </div>
-
-      <!-- PERM -->
-      <div class="card">
-        <strong>perm</strong>
-        <ul>
-          <li>レギュラーパーマ <span class="price">¥7,000〜</span></li>
-          <li>ポイントパーマ <span class="price">¥4,000〜</span></li>
-          <li>縮毛矯正 <span class="price">¥14,000</span></li>
-          <li>美髪矯正 <span class="price">¥22,500</span></li>
-        </ul>
-      </div>
-
-      <!-- TREATMENT -->
-      <div class="card">
-        <strong>treatment</strong>
-        <ul>
-          <li>美髪ケア <span class="price">¥11,000〜</span></li>
-          <li>クイックケア <span class="price">¥4,400〜</span></li>
-        </ul>
-      </div>
-
+      <div class="card"><strong>cut</strong><ul>
+        <li>cut <span class="price">¥5,500</span></li>
+        <li>スクール CUT <span class="price">¥4,800</span></li>
+        <li>チャイルド CUT <span class="price">¥3,500</span></li>
+      </ul></div>
+      <div class="card"><strong>color</strong><ul>
+        <li>おしゃれ染め <span class="price">¥7,700</span></li>
+        <li>白髪染め <span class="price">¥6,500</span></li>
+        <li>ダブルカラー <span class="price">¥14,000〜</span></li>
+        <li>ポイントカラー <span class="price">¥4,000〜</span></li>
+      </ul></div>
+      <div class="card"><strong>perm</strong><ul>
+        <li>レギュラーパーマ <span class="price">¥7,000〜</span></li>
+        <li>縮毛矯正 <span class="price">¥14,000</span></li>
+        <li>美髪矯正 <span class="price">¥22,500</span></li>
+      </ul></div>
+      <div class="card"><strong>treatment</strong><ul>
+        <li>美髪ケア <span class="price">¥11,000〜</span></li>
+        <li>クイックケア <span class="price">¥4,400〜</span></li>
+      </ul></div>
     </div>
-    <p class="small muted">※税込。詳細やその他のメニューは店内またはLINEにてご案内いたします。</p>
   </section>
 
-  <!-- ===== STAFF ===== -->
-  <section id="staff" class="section alt" aria-label="スタッフ">
+  <!-- STAFF -->
+  <section id="staff" class="section alt">
     <h2>staff</h2>
     <div class="cards staff">
-      <a class="card" href="staff/mizobe.html" style="text-decoration:none;color:inherit">
-        <img src="images/staff1.jpg" alt="溝部 和臣" width="800" height="1000" loading="lazy" />
-        <h3>溝部 和臣</h3>
-        <p class="muted">カウンセリングを大切に、貴方の綺麗を引き出します</p>
-      </a>
-      <a class="card" href="staff/kinoshita.html" style="text-decoration:none;color:inherit">
-        <img src="images/staff2.jpg" alt="木下 卓充" width="800" height="1000" loading="lazy" />
-        <h3>木下 卓充</h3>
-        <p class="muted">流行スタイルをあなたに合わせてアレンジ</p>
-      </a>
+      <a class="card" href="staff/mizobe.html"><img src="images/staff1.jpg" alt="溝部 和臣"><h3>溝部 和臣</h3><p>カウンセリングを大切に、貴方の綺麗を引き出します</p></a>
+      <a class="card" href="staff/kinoshita.html"><img src="images/staff2.jpg" alt="木下 卓充"><h3>木下 卓充</h3><p>流行スタイルをあなたに合わせてアレンジ</p></a>
     </div>
   </section>
 
-  <!-- ===== BLOG（microCMS 最新3件） ===== -->
-  <section id="blog" class="section" aria-label="ブログ">
+  <!-- BLOG -->
+  <section id="blog" class="section">
     <h2>blog</h2>
-    <div id="blog-list" class="cards" aria-live="polite"></div>
-    <p class="small muted" style="text-align:center;margin-top:14px">
-      <a class="btn" href="blog/index.html">ブログ一覧を見る</a>
-    </p>
+    <div id="blog-list" class="cards"></div>
+    <p style="text-align:center;margin-top:14px;"><a class="btn" href="blog/index.html">ブログ一覧を見る</a></p>
   </section>
 
-  <!-- ===== GALLERY ===== -->
-  <section id="gallery" class="section" aria-label="ギャラリー">
-    <h2>gallery</h2>
-    <p class="small muted" style="margin-bottom:14px; text-align:center;">
-      <a class="btn fill" href="https://www.instagram.com/pieces_hairsalon" target="_blank" rel="noopener">Instagramで見る</a>
-    </p>
-    <div class="card" style="overflow:hidden; border-radius:18px; padding:0;">
-      <iframe
-        src="https://snapwidget.com/embed/1110428"
-        class="snapwidget-widget"
-        title="Instagram posts"
-        allowtransparency="true"
-        frameborder="0"
-        scrolling="no"
-        loading="lazy"
-        style="border:none; overflow:hidden; width:100%; min-height:520px; display:block;">
-      </iframe>
-    </div>
-  </section>
-
-  <!-- ===== CONTACT ===== -->
-  <section id="contact" class="section" aria-label="お問い合わせ">
+  <!-- CONTACT -->
+  <section id="contact" class="section alt">
     <h2>contact</h2>
-    <p>ご質問・ご相談はLINEが便利です☆</p>
-    <p><a class="btn fill" href="https://line.me/R/ti/p/@vtd8113w" target="_blank" rel="noopener">LINEで予約</a></p>
+    <p>ご質問・ご相談はLINEが便利です。</p>
+    <a class="btn fill" href="https://line.me/R/ti/p/@vtd8113w" target="_blank">LINEで予約</a>
   </section>
 
-  <!-- ===== ACCESS ===== -->
-  <section id="access" class="section alt" aria-label="アクセス">
+  <!-- ACCESS -->
+  <section id="access" class="section">
     <h2>access</h2>
-    <p>
-      〒277-0011 千葉県柏市東上町１−１０ 丸ビル柏銀座 2F<br />
-      柏駅 徒歩約10分
-    </p>
-    <p class="muted" style="color:#000;font-size:16px;line-height:1.8;">
-      営業時間 10:00〜19:00（カット最終 18:00）／ 定休日：水曜日＋月2日不定休
-    </p>
-    <p>
-      <a class="btn" href="https://maps.google.com/?q=柏市東上町１−１０ 丸ビル柏銀座 2F" target="_blank" rel="noopener">Googleマップで開く</a>
-    </p>
+    <p>〒277-0011 千葉県柏市東上町1−10 丸ビル柏銀座 2F<br>柏駅 徒歩約10分</p>
+    <p class="muted">営業時間 10:00〜19:00（カット最終 18:00）<br>定休日：水曜日＋月2日不定休</p>
+    <a class="btn" href="https://maps.google.com/?q=柏市東上町1−10 丸ビル柏銀座 2F" target="_blank">Googleマップで開く</a>
   </section>
-
-  <!-- ===== Debug（任意） ===== -->
-  <div id="debug" class="wrap small muted" style="border-top:1px dashed #ddd;margin-top:24px;padding:14px 0">
-    <strong>画像チェック（デバッグ用）</strong> — 下のリンクが404ならファイル名か場所が違います：
-    <ul>
-      <li><a href="images/logo.jpeg" target="_blank">images/logo.jpeg</a></li>
-      <li><a href="images/hero1.jpeg" target="_blank">images/hero1.jpeg</a></li>
-      <li><a href="images/hero2.jpeg" target="_blank">images/hero2.jpeg</a></li>
-      <li><a href="images/hero3.jpeg" target="_blank">images/hero3.jpeg</a></li>
-      <li><a href="images/staff1.jpg" target="_blank">images/staff1.jpg</a></li>
-      <li><a href="images/staff2.jpg" target="_blank">images/staff2.jpg</a></li>
-    </ul>
-  </div>
 </main>
 
 <footer><div class="wrap"><p>© pieces hair.</p></div></footer>
 
 <!-- ===== Scripts ===== -->
-<script src="validate-paths.js"></script>
 <script src="https://snapwidget.com/js/snapwidget.js"></script>
 
-<!-- microCMS: ホーム新着3件 -->
+<!-- microCMSブログ読み込み -->
 <script>
-  const MICROCMS_KEY = "OD6b2kmbP5JvTqJgejktTJvwnKUJpLV03fU"; // 公開APIキー
+  const MICROCMS_KEY = "OD6b2kmbP5JywTqJgejkTfJrwnKUJpLV03fU"; // ← あなたのAPIキー
   const BLOG_ENDPOINT = "https://pieces.microcms.io/api/v1/blog";
 
   async function loadHomeBlog(){
@@ -266,36 +172,34 @@
       document.getElementById("blog-list").innerHTML =
         (data.contents || []).map(toCard).join("") || `<p class="muted">記事がありません。</p>`;
     }catch(e){
-      console.error(e);
+      console.error("microCMS読み込みエラー:", e);
       document.getElementById("blog-list").innerHTML = `<p class="muted">読み込みに失敗しました。</p>`;
     }
   }
   loadHomeBlog();
 </script>
 
-<!-- ヒーロー：自動スライド -->
+<!-- スライドショー -->
 <script>
   let currentSlide = 0;
   const slides = document.querySelectorAll('.slideshow img');
-  const totalSlides = slides.length;
-  function showSlide(index){
-    slides.forEach((img, i)=>img.classList.toggle('active', i===index));
-  }
   function nextSlide(){
-    currentSlide = (currentSlide + 1) % totalSlides;
-    showSlide(currentSlide);
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide + 1) % slides.length;
+    slides[currentSlide].classList.add('active');
   }
   setInterval(nextSlide, 4000);
 </script>
 
-<!-- 固定ヘッダー高さを反映（アンカーずれ防止 & ロゴサイズ変更にも追従） -->
+<!-- ヘッダー固定ずれ調整 -->
 <script>
   function setHeaderOffset(){
-    const h = (document.querySelector('.header')?.offsetHeight || 72) - 0;
+    const h = (document.querySelector('.header')?.offsetHeight || 72);
     document.documentElement.style.setProperty('--headerH', h + 'px');
   }
   window.addEventListener('load', setHeaderOffset);
   window.addEventListener('resize', setHeaderOffset);
 </script>
+
 </body>
 </html>
