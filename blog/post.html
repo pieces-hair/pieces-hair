@@ -1,48 +1,134 @@
-<!DOCTYPE html><html lang="ja"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>blog post | pieces</title>
-<link rel="icon" href="../images/logo.jpeg">
-<link rel="stylesheet" href="../styles.css">
-<style>
-.article img{max-width:100%;height:auto;border-radius:12px}
-.article h1{font-size:24px;margin:10px 0}
-.article .meta{color:var(--muted);font-size:12px;margin-bottom:16px}
-</style>
-</head><body>
-<header class="header"><div class="wrap nav">
-  <a class="brand" href="../#top"><img src="../images/logo.jpeg" alt="" width="40" height="40"><span>pieces hair</span></a>
-  <nav class="menu"><a href="../#concept">concept</a><a href="../#menu">menu</a><a href="../#staff">staff</a><a href="./">blog</a></nav>
-</div></header>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>blog post | pieces</title>
+  <meta name="description" content="pieces のブログ記事">
+  <link rel="icon" href="../images/logo.jpeg">
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    .article{padding:20px}
+    .article img{max-width:100%;height:auto;border-radius:12px}
+    .article h1{font-size:24px;margin:10px 0}
+    .article .meta{color:var(--muted);font-size:12px;margin-bottom:16px}
+    .article .body{line-height:1.9}
+    .notice{background:#fff8e1;border:1px solid #ffe0a3;border-radius:10px;padding:12px 14px;color:#5f4b00}
+  </style>
+
+  <!-- OGP（読込後にJSで上書きもします） -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="pieces hair">
+  <meta property="og:title" content="blog post | pieces">
+  <meta property="og:description" content="pieces のブログ記事">
+  <meta property="og:image" content="https://pieces-hair.github.io/pieces-hair/images/ogp.jpg">
+</head>
+<body>
+<header class="header">
+  <div class="wrap nav">
+    <a class="brand" href="../index.html#top" aria-label="トップへ">
+      <img src="../images/logo.jpeg" alt="pieces ロゴ" width="40" height="40">
+      <span>pieces</span>
+    </a>
+    <nav class="menu" aria-label="主要ナビゲーション">
+      <a href="../index.html#concept">concept</a>
+      <a href="../index.html#menu">menu</a>
+      <a href="../index.html#staff">staff</a>
+      <a href="./index.html">blog</a>
+      <a href="../index.html#gallery">gallery</a>
+      <a href="../index.html#access">access</a>
+      <a href="../index.html#contact">contact</a>
+    </nav>
+  </div>
+</header>
 
 <main class="wrap section">
   <article id="post" class="article card"></article>
-  <p style="margin-top:14px"><a class="btn" href="./">← ブログ一覧へ</a></p>
+  <p style="margin-top:14px">
+    <a class="btn" href="./">← ブログ一覧へ</a>
+  </p>
 </main>
 
 <footer><div class="wrap"><p>© pieces hair.</p></div></footer>
 
 <script>
-const KEY="OD6b2kmbP5JvTqJgejktTJvwnKUJpLV03fU";
-const EP ="https://pieces.microcms.io/api/v1/blog";
-const id=new URL(location.href).searchParams.get('id');
+  // ====== microCMS 設定 ======
+  const KEY = "OD6b2kmbP5JywTqJgejkTfJrwnKUJpLV03fU"; // 公開APIキー（default）
+  const EP  = "https://pieces.microcms.io/api/v1/blog";
+  const params = new URL(location.href).searchParams;
+  const id = params.get("id");
 
-async function load(){
-  if(!id){document.getElementById('post').innerHTML='<p>記事が見つかりません。</p>';return;}
-  try{
-    const r=await fetch(`${EP}/${id}`,{headers:{'X-MICROCMS-API-KEY':KEY}});
-    const p=await r.json();
-    document.title = `${p.title} | pieces`;
-    document.getElementById('post').innerHTML = `
-      ${p.eyecatch?`<img src="${p.eyecatch.url}" alt="${p.title}" style="margin-bottom:12px">`:``}
-      <h1>${p.title}</h1>
-      <div class="meta">${(p.publishedAt||p.createdAt||"").slice(0,10)}　${p.category?` / ${p.category}`:''}</div>
-      <div class="body">${p.body??""}</div>
-    `;
-  }catch(e){
-    console.error(e);
-    document.getElementById('post').innerHTML='<p>読み込みに失敗しました。</p>';
+  // 日付整形（YYYY-MM-DD）
+  const fmt = (s) => (s || "").slice(0,10);
+
+  // カテゴリは string / object / array どれでも対応
+  function renderCategory(cat){
+    if (!cat) return "";
+    if (typeof cat === "string") return cat;
+    if (Array.isArray(cat)) return cat.map(c => c?.name ?? c).filter(Boolean).join(", ");
+    return cat.name ?? "";
   }
-}
-load();
+
+  async function load(){
+    const el = document.getElementById("post");
+    if(!id){
+      el.innerHTML = '<p class="notice">記事が見つかりません。（URLに <code>?id=...</code> が必要です）</p>';
+      return;
+    }
+
+    try{
+      const res = await fetch(`${EP}/${id}`, { headers: { "X-MICROCMS-API-KEY": KEY } });
+
+      if(!res.ok){
+        if(res.status === 401){
+          el.innerHTML = `
+            <div class="notice">
+              <strong>401（認証エラー）</strong><br>
+              APIキーが無効かヘッダー名が誤っています。<br>
+              ・defaultキーの末尾4文字が一致するか再確認<br>
+              ・"X-MICROCMS-API-KEY" のスペル<br>
+              ・この記事が「公開」状態か（下書きは取得不可）
+            </div>`;
+        }else{
+          el.innerHTML = `<p class="notice">読み込みに失敗しました（HTTP ${res.status}）。時間をおいて再度お試しください。</p>`;
+        }
+        console.error("[microCMS error]", res.status, await res.text());
+        return;
+      }
+
+      const p = await res.json();
+      const cat = renderCategory(p.category);
+
+      // 画面描画
+      el.innerHTML = `
+        ${p.eyecatch ? `<img src="${p.eyecatch.url}" alt="${p.title}" style="margin-bottom:12px">` : ``}
+        <h1>${p.title ?? "（無題）"}</h1>
+        <div class="meta">${fmt(p.publishedAt || p.createdAt)}${cat ? `　/　${cat}` : ""}</div>
+        <div class="body">${p.body ?? ""}</div>
+      `;
+
+      // タイトル/OGPを上書き（可能な範囲）
+      if(p.title){
+        document.title = `${p.title} | pieces`;
+        const ogt = document.querySelector('meta[property="og:title"]');
+        if(ogt) ogt.setAttribute("content", document.title);
+      }
+      if(p.excerpt){
+        const ogd = document.querySelector('meta[property="og:description"]');
+        if(ogd) ogd.setAttribute("content", p.excerpt);
+      }
+      if(p.eyecatch?.url){
+        const ogi = document.querySelector('meta[property="og:image"]');
+        if(ogi) ogi.setAttribute("content", p.eyecatch.url);
+      }
+
+    }catch(e){
+      console.error(e);
+      el.innerHTML = '<p class="notice">読み込みに失敗しました。ネットワーク状況をご確認ください。</p>';
+    }
+  }
+
+  load();
 </script>
-</body></html>
+</body>
+</html>

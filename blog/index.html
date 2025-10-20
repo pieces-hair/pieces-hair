@@ -7,7 +7,7 @@
   <meta name="description" content="pieces のブログ一覧">
   <link rel="icon" href="../images/logo.jpeg">
   <meta name="format-detection" content="telephone=no">
-  <!-- ルートのCSSを再利用 -->
+  <!-- 共通スタイル -->
   <link rel="stylesheet" href="../styles.css">
   <style>
     /* ブログ一覧のちょい足し */
@@ -18,78 +18,103 @@
     .cards.blog-list .card strong{display:block;margin-bottom:4px}
   </style>
 </head>
+
 <body>
-
-<header class="header">
-  <div class="wrap nav">
-    <a class="brand" href="../index.html#top" aria-label="トップへ">
-      <img src="../images/logo.jpeg" alt="pieces ロゴ" width="48" height="48" loading="eager">
-      <span>pieces</span>
-    </a>
-    <nav class="menu" aria-label="主要ナビゲーション">
-      <a href="../index.html#concept">concept</a>
-      <a href="../index.html#menu">menu</a>
-      <a href="../index.html#staff">staff</a>
-      <a href="./index.html">blog</a>
-      <a href="../index.html#gallery">gallery</a>
-      <a href="../index.html#access">access</a>
-      <a href="../index.html#contact">contact</a>
-    </nav>
-  </div>
-</header>
-
-<main class="wrap" id="top">
-  <section class="blog-hero">
-    <h1>blog</h1>
-    <p>サロンからのお知らせやヘアケアのコツをお届けします。</p>
-  </section>
-
-  <section class="section" aria-label="ブログ一覧">
-    <div id="blog-list" class="cards blog-list" aria-live="polite">
-      <!-- ここにJSでカードが入ります -->
+  <header class="header">
+    <div class="wrap nav">
+      <a class="brand" href="../index.html#top" aria-label="トップへ">
+        <img src="../images/logo.jpeg" alt="pieces ロゴ" width="48" height="48" loading="eager">
+        <span>pieces</span>
+      </a>
+      <nav class="menu" aria-label="主要ナビゲーション">
+        <a href="../index.html#concept">concept</a>
+        <a href="../index.html#menu">menu</a>
+        <a href="../index.html#staff">staff</a>
+        <a href="./index.html">blog</a>
+        <a href="../index.html#gallery">gallery</a>
+        <a href="../index.html#access">access</a>
+        <a href="../index.html#contact">contact</a>
+      </nav>
     </div>
+  </header>
 
-    <p class="small muted" id="blog-note" style="margin-top:14px"></p>
-  </section>
-</main>
+  <main class="wrap" id="top">
+    <section class="blog-hero">
+      <h1>blog</h1>
+      <p>サロンからのお知らせやヘアケアのコツをお届けします。</p>
+    </section>
 
-<footer><div class="wrap"><p>© pieces hair.</p></div></footer>
+    <section class="section" aria-label="ブログ一覧">
+      <div id="blog-list" class="cards blog-list" aria-live="polite"></div>
+      <p class="small muted" id="blog-note" style="margin-top:14px"></p>
+    </section>
+  </main>
 
-<script>
-  // ★ホームと同じ公開APIキー＆エンドポイントを使用
-  const MICROCMS_KEY = "OD6b2kmbP5JvTqJgejktTJvwnKUJpLV03fU";
-  const BLOG_ENDPOINT = "https://pieces.microcms.io/api/v1/blog";
+  <footer><div class="wrap"><p>© pieces hair.</p></div></footer>
 
-  async function loadBlogList(){
-    const list = document.getElementById('blog-list');
-    const note = document.getElementById('blog-note');
-    try{
-      const res = await fetch(`${BLOG_ENDPOINT}?limit=30&orders=-publishedAt`, {
-        headers: { "X-MICROCMS-API-KEY": MICROCMS_KEY }
-      });
-      const data = await res.json();
+  <!-- ===================== -->
+  <!-- microCMS 読み込み処理 -->
+  <!-- ===================== -->
+  <script>
+    // 🔑 microCMS設定
+    const MICROCMS_KEY = "OD6b2kmbP5JywTqJgejkTfJrwnKUJpLV03fU"; // ← default APIキーを正確に
+    const BLOG_ENDPOINT = "https://pieces.microcms.io/api/v1/blog";
 
-      if(!data.contents || data.contents.length === 0){
-        list.innerHTML = `<p class="muted">まだ記事がありません。</p>`;
-        return;
+    async function loadBlogList() {
+      const list = document.getElementById('blog-list');
+      const note = document.getElementById('blog-note');
+
+      try {
+        const res = await fetch(`${BLOG_ENDPOINT}?limit=30&orders=-publishedAt`, {
+          headers: { "X-MICROCMS-API-KEY": MICROCMS_KEY }
+        });
+
+        // ステータスコード別エラーハンドリング
+        if (!res.ok) {
+          if (res.status === 401) {
+            list.innerHTML = `
+              <p class="muted">
+                <strong>401（認証エラー）</strong><br>
+                microCMS APIキーが正しく認識されていません。<br><br>
+                ▼確認ポイント<br>
+                ・「APIキー管理」で defaultキーをコピー（末尾4文字一致）<br>
+                ・ヘッダ名 "X-MICROCMS-API-KEY" のスペル<br>
+                ・エンドポイント名が「blog」で一致しているか
+              </p>`;
+          } else {
+            list.innerHTML = `<p class="muted">読み込みに失敗しました（HTTP ${res.status}）。</p>`;
+          }
+          console.error("microCMS HTTP error:", res.status, await res.text());
+          return;
+        }
+
+        const data = await res.json();
+        if (!data.contents || data.contents.length === 0) {
+          list.innerHTML = `<p class="muted">まだ記事がありません。</p>`;
+          note.textContent = "";
+          return;
+        }
+
+        list.innerHTML = data.contents.map(p => `
+          <a class="card" href="./post.html?id=${p.id}" style="text-decoration:none;color:inherit">
+            ${p.eyecatch ? `<img src="${p.eyecatch.url}" alt="${p.title}">` : ""}
+            <strong>${p.title}</strong>
+            <p class="small muted">${(p.publishedAt || p.createdAt || "").slice(0,10)}</p>
+            ${p.excerpt ? `<p class="muted">${p.excerpt}</p>` : ""}
+          </a>
+        `).join('');
+
+        note.textContent = \`全 ${data.totalCount} 件\`;
+
+      } catch (e) {
+        console.error("microCMS読み込みエラー:", e);
+        list.innerHTML = `<p class="muted">読み込みに失敗しました。時間をおいて再度お試しください。</p>`;
+        note.textContent = "";
       }
-
-      list.innerHTML = data.contents.map(p => `
-        <a class="card" href="./post.html?id=${p.id}" style="text-decoration:none;color:inherit">
-          ${p.eyecatch ? `<img src="${p.eyecatch.url}" alt="${p.title}">` : ""}
-          <strong>${p.title}</strong>
-          <p class="small muted">${(p.publishedAt||p.createdAt||"").slice(0,10)}</p>
-          ${p.excerpt ? `<p class="muted">${p.excerpt}</p>` : ""}
-        </a>
-      `).join('');
-
-      note.textContent = `全 ${data.totalCount} 件`;
-    }catch(e){
-      console.error(e);
-      list.innerHTML = `<p class="muted">読み込みに失敗しました。時間をおいて再度お試しください。</p>`;
     }
-  }
-  loadBlogList();
-</script>
+
+    // 実行
+    loadBlogList();
+  </script>
 </body>
 </html>
