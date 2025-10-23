@@ -132,7 +132,7 @@
         溝部 和臣
         <span class="kana">(ミゾベ カズオミ)</span>
       </h1>
-      <p class="staff-qual">毛髪診断士 / 美髪ケアアドバイザー</p>
+      <p class="staff-qual"> 美髪ケア講師</p>
 
       <div class="cta" style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap">
         <a class="btn fill" href="https://line.me/R/ti/p/@vtd8113w" target="_blank" rel="noopener">LINEで予約</a>
@@ -190,5 +190,22 @@
   <footer>
     <div class="wrap"><p>© pieces hair.</p></div>
   </footer>
+  <footer>
+    <div class="wrap">
+      <p>© pieces hair.</p>
+    </div>
+  </footer>
+
+  <!-- ✅ 共通リンク補正スクリプト -->
+  <script>
+    // ローカル(file://)と本番(https://pieces-hair.github.io/pieces-hair/)でリンク先を自動補正
+    (function() {
+      const base = location.protocol === "file:" ? ".." : "/pieces-hair";
+      document.querySelectorAll('a[data-link]').forEach(a => {
+        a.href = base + a.getAttribute('data-link');
+      });
+    })();
+  </script>
 </body>
+</html></body>
 </html>

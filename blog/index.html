@@ -116,5 +116,22 @@
     // 実行
     loadBlogList();
   </script>
+  <footer>
+    <div class="wrap">
+      <p>© pieces hair.</p>
+    </div>
+  </footer>
+
+  <!-- ✅ 共通リンク補正スクリプト -->
+  <script>
+    // ローカル(file://)と本番(https://pieces-hair.github.io/pieces-hair/)でリンク先を自動補正
+    (function() {
+      const base = location.protocol === "file:" ? ".." : "/pieces-hair";
+      document.querySelectorAll('a[data-link]').forEach(a => {
+        a.href = base + a.getAttribute('data-link');
+      });
+    })();
+  </script>
 </body>
+</html></body>
 </html>

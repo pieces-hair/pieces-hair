@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>木下 卓充 | pieces</title>
-  <meta name="description" content="柏の美容室pieces スタイリスト 木下卓充。似合わせ・メンズカット・パーマが得意。丁寧な施術で扱いやすい髪へ。">
+  <meta name="description" content="柏の美容室pieces スタイリスト 木下卓充。柔らかい質感カットとブリーチカラー、ボブ、白髪ぼかしが得意。お客様一人ひとりに寄り添った丁寧な提案を心がけています。">
   <link rel="icon" href="../images/logo.jpeg" />
   <link rel="stylesheet" href="../styles.css" />
   <style>
@@ -30,7 +30,6 @@
       color:var(--muted);
       font-weight:500;
     }
-    /* 名前の下に小さく資格・肩書きを出す */
     .staff-qual{
       font-size:14px;
       color:#17807B;
@@ -133,7 +132,7 @@
         木下 卓充
         <span class="kana">(キノシタ タクミ)</span>
       </h1>
-      <p class="staff-qual">ヘアケアマイスター / パーマデザインアドバイザー</p>
+      <p class="staff-qual"></p>
 
       <div class="cta" style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap">
         <a class="btn fill" href="https://line.me/R/ti/p/@vtd8113w" target="_blank" rel="noopener">LINEで予約</a>
@@ -151,7 +150,7 @@
         <table class="profile-table" aria-label="プロフィール">
           <tr>
             <th scope="row">生年月日</th>
-            <td>1991年5月20日</td>
+            <td>1989年05月03日</td>
           </tr>
           <tr>
             <th scope="row">血液型</th>
@@ -159,31 +158,32 @@
           </tr>
           <tr>
             <th scope="row">趣味</th>
-            <td>映画 / サウナ / グルメ巡り</td>
+            <td>映画 / ゲーム / ラーメン</td>
           </tr>
         </table>
 
         <div class="badges" aria-label="得意ジャンル">
-          <span class="badge">似合わせカット</span>
-          <span class="badge">メンズカット</span>
-          <span class="badge">パーマ</span>
-          <span class="badge">ナチュラルカラー</span>
+          <span class="badge">ブリーチカラー</span>
+          <span class="badge">ショートカット</span>
+          <span class="badge">ボブ</span>
+          <span class="badge">白髪活かしカラー</span>
         </div>
 
         <div class="greet">
           <p>
-            こんにちは、木下です。お客様一人ひとりの骨格や雰囲気に合わせて、毎日扱いやすく再現しやすいスタイルをご提案します。
+            こんにちは、木下です。お客様1人1人の骨格や髪質、雰囲気に合わせて、理想のスタイルをご提案いたします。
           </p>
           <p>
-            パーマや質感づくりが得意です。朝のスタイリングがラクになるコツもお伝えしますので、ぜひご相談ください。
+            カラーや質感カットで柔らかいスタイルをつくるのが得意です。リラックスしていただける空間を心がけていますので、ぜひお気軽にご相談ください。
           </p>
         </div>
 
         <p class="small muted" style="margin:0 18px 18px">
           ※担当のご予約は <a href="https://line.me/R/ti/p/@vtd8113w" target="_blank" rel="noopener">LINE</a> からどうぞ。
-        </p> <div style="text-align:center; margin:24px 0 10px;">
-        <a class="btn back" href="../index.html#staff">← スタッフ一覧に戻る</a>
-      </div>
+        </p> 
+        <div style="text-align:center; margin:24px 0 10px;">
+          <a class="btn back" href="../index.html#staff">← スタッフ一覧に戻る</a>
+        </div>
       </div>
     </div>
   </main>
@@ -191,5 +191,22 @@
   <footer>
     <div class="wrap"><p>© pieces hair.</p></div>
   </footer>
+  <footer>
+    <div class="wrap">
+      <p>© pieces hair.</p>
+    </div>
+  </footer>
+
+  <!-- ✅ 共通リンク補正スクリプト -->
+  <script>
+    // ローカル(file://)と本番(https://pieces-hair.github.io/pieces-hair/)でリンク先を自動補正
+    (function() {
+      const base = location.protocol === "file:" ? ".." : "/pieces-hair";
+      document.querySelectorAll('a[data-link]').forEach(a => {
+        a.href = base + a.getAttribute('data-link');
+      });
+    })();
+  </script>
 </body>
+</html></body>
 </html>
