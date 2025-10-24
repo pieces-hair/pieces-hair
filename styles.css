@@ -219,7 +219,7 @@ a:focus,button:focus,.btn:focus{
 /* ===== reviews の停止位置をピタッと合わせる（blogが見えない地点） ===== */
 #reviews.section{
   /* 共通より少し下で止める = 上に余白を足す */
-  scroll-margin-top:calc(var(--headerH) + 32px) !important;
+  scroll-margin-top:calc(var(--headerH) -10px) !important;
 }
 @media (max-width:720px){
   #reviews.section{
