@@ -33,12 +33,11 @@
   <meta name="format-detection" content="telephone=no" />
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- 固定ヘッダーのアンカーずれ防止（念押し） -->
+  <!-- 固定ヘッダーのアンカーずれ防止 -->
   <style>
     :root{ --headerH: 96px; }
     html{ scroll-behavior:smooth; scroll-padding-top: calc(var(--headerH) + 12px); }
     .section{ scroll-margin-top: calc(var(--headerH) + 12px); }
-    /* 既存のメニュー整形・スライドショー */
     #menu .card li{ display:flex; justify-content:space-between; border-bottom:1px dotted #eee; padding:6px 0; }
     #menu .price{ flex-shrink:0; width:90px; text-align:right; }
     .slideshow{ position:relative; width:100%; overflow:hidden; border-radius:12px }
@@ -202,7 +201,7 @@
 
 <!-- microCMS（トップ3件） -->
 <script>
-  const MICROCMS_KEY = "OD6b2kmbP5JywTqJgejkTfJrwnKUJpLV03fU"; // あなたの default APIキー
+  const MICROCMS_KEY = "OD6b2kmbP5JywTqJgejkTfJrwnKUJpLV03fU";
   const BLOG_ENDPOINT = "https://pieces.microcms.io/api/v1/blog";
 
   async function loadHomeBlog(){
@@ -241,7 +240,7 @@
   setInterval(nextSlide, 4000);
 </script>
 
-<!-- ヘッダー高さをCSS変数に反映（アンカー位置補正） -->
+<!-- ヘッダー高さをCSS変数に反映 -->
 <script>
   function setHeaderOffset(){
     const h = (document.querySelector('.header')?.offsetHeight || 72);
@@ -262,12 +261,11 @@
   })();
 </script>
 
-<!-- Google レビュー：設定＋描画 -->
+<!-- Google レビュー：設定＋描画（キーはここ“だけ”に書く） -->
 <script>
-  // ★差し替え必須
-  const GOOGLE_API_KEY = "YOUR_GOOGLE_MAPS_API_KEY";AIzaSyCfZZAP0_T3ABrTXjBdZAdcCbvvdXBwIKU
-  const PLACE_ID       = "YOUR_GOOGLE_PLACE_ID"; ChIJN6a9nFSdGGARkhoyfbQBhmo 
-
+  // ★ここを本物に置き換え
+  const GOOGLE_API_KEY = "AIzaSyCfZZAP0_T3ABrTXjBdZAdcCbvvdXBwIKU";
+const PLACE_ID       = "ChIJN6a9nFSdGGARkhoyfbQBhmo"; //
   const stars = n => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n));
 
   function renderReviews(details){
@@ -296,18 +294,27 @@
 
   function initReviews(){
     const svc = new google.maps.places.PlacesService(document.createElement('div'));
-    svc.getDetails({ placeId: PLACE_ID, fields: ['rating','user_ratings_total','reviews'] }, (place, status) => {
-      if (status !== google.maps.places.PlacesServiceStatus.OK){
-        console.error('Places getDetails error:', status);
-        document.getElementById('reviews-list').innerHTML = '<p class="muted">口コミの取得に失敗しました。</p>';
-        return;
+    svc.getDetails(
+      { placeId: PLACE_ID, fields: ['rating','user_ratings_total','reviews'] },
+      (place, status) => {
+        if (status !== google.maps.places.PlacesServiceStatus.OK){
+          console.error('Places getDetails error:', status);
+          document.getElementById('reviews-list').innerHTML = '<p class="muted">口コミの取得に失敗しました。</p>';
+          return;
+        }
+        renderReviews(place);
       }
-      renderReviews(place);
-    });
+    );
   }
-</script>
-<script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places&language=ja&callback=initReviews">
+
+  // Maps JavaScript API を“1回だけ”動的読込（キーの二重記載を防ぐ）
+  (function loadMaps(){
+    const s = document.createElement('script');
+    s.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(GOOGLE_API_KEY)}&libraries=places&language=ja&callback=initReviews`;
+    s.async = true;
+    s.defer = true;
+    document.head.appendChild(s);
+  })();
 </script>
 </body>
 </html>
