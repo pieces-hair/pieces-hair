@@ -361,7 +361,7 @@
         const el = document.querySelector('#reviews');
         if (!el) return;
         const headerH = document.querySelector('.header')?.offsetHeight || 80;
-        const extra = 40; // ←ここだけお好みで微調整。大きいほどさらに上に止まる
+        const extra = 90; // ←ここだけお好みで微調整。大きいほどさらに上に止まる
         const top = el.getBoundingClientRect().top + window.scrollY - headerH - extra;
         window.scrollTo({ top, behavior: 'auto' });
       });
