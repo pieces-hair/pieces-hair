@@ -391,18 +391,15 @@
   })();
 </script>
 <script>
-  // ページ読み込み後、URLに #reviews が付いていたら補正スクロール
   window.addEventListener("load", () => {
     if (location.hash === "#reviews") {
-      const el = document.querySelector("#reviews");
-      if (el) {
+      requestAnimationFrame(() => {
+        const el = document.querySelector("#reviews");
+        if (!el) return;
         const headerH = document.querySelector(".header")?.offsetHeight || 80;
         const rect = el.getBoundingClientRect().top + window.scrollY;
-        window.scrollTo({
-          top: rect - headerH - 20, // ← 余白微調整したい場合はこの数字（-20）を変える
-          behavior: "instant"
-        });
-      }
+        window.scrollTo({ top: rect - headerH - 20, behavior: "auto" }); // -20は好みで調整
+      });
     }
   });
 </script></body>
