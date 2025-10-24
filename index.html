@@ -33,7 +33,7 @@
   <meta name="format-detection" content="telephone=no" />
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- 固定ヘッダーのアンカーずれ防止 -->
+  <!-- 固定ヘッダーのアンカーずれ防止＋軽い見た目 -->
   <style>
     :root{ --headerH: 96px; }
     html{ scroll-behavior:smooth; scroll-padding-top: calc(var(--headerH) + 12px); }
@@ -43,7 +43,8 @@
     .slideshow{ position:relative; width:100%; overflow:hidden; border-radius:12px }
     .slideshow img{ position:absolute; inset:0; width:100%; height:auto; object-fit:cover; opacity:0; transition:opacity 1.2s ease-in-out }
     .slideshow img.active{ opacity:1; z-index:1 }
-    /* 口コミアクション行の軽い整形 */
+
+    /* 口コミアクション行 */
     #reviews-actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
     #reviews-actions .btn{ min-width:160px; }
   </style>
@@ -131,7 +132,7 @@
     <p class="small muted" id="reviews-note"></p>
     <div class="cta cta-row" id="reviews-actions">
       <a id="btn-write-review" class="btn" target="_blank" rel="noopener" href="#">Googleで口コミを書く</a>
-      <button id="btn-more-reviews" class="btn" style="display:none;">もっと見る</button>
+      <button id="btn-more-reviews" class="btn" style="display:none;">Googleでさらに見る</button>
     </div>
   </section>
 
@@ -269,76 +270,69 @@
   })();
 </script>
 
-<!-- Google レビュー：ボタン＆もっと見る付き -->
+<!-- Google レビュー：ボタン＆“さらに見る”はGoogleへ誘導（APIは最大5件まで） -->
 <script>
-  // ★ここだけ差し替え（すでにあなたの値）
-  const GOOGLE_API_KEY = "AIzaSyCfZZAP0_T3ABrTXjBdZAdcCbvvdXBwIKU";
-  const PLACE_ID       = "ChIJN6a9nFSdGGARkhoyfbQBhmo";
+  // ★ここだけ差し替え（あなたの実キーとPlace IDを設定）
+  const GOOGLE_API_KEY = "AIzaSyCfZZAP0_T3ABrTXjBdZAdcCbvvdXBwIKU"; // ←実キー
+  const PLACE_ID       = "ChIJN6a9nFSdGGARkhoyfbQBhmo";             // ←実Place ID
 
-  // 状態
   let allReviews = [];
-  let visibleCount = 6;
-  const STEP = 6;
-
   const stars = n => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n));
 
   function reviewsToHTML(arr){
     return arr.map(r => {
       const ts = r.time ? new Date(r.time * 1000) : null;
-      const dateStr = ts ? ts.toLocaleDateString('ja-JP')
-                         : (r.relative_time_description || '');
+      const dateStr = ts ? ts.toLocaleDateString('ja-JP') : (r.relative_time_description || '');
       return `
-      <div class="card" style="display:block">
-        <div style="font-weight:600;margin-bottom:6px">
-          ${stars(r.rating)} <span class="small muted">${Number(r.rating).toFixed(1)}/5</span>
-        </div>
-        <p style="margin:8px 0;color:#000">${(r.text || '').replace(/\n/g,'<br>')}</p>
-        <p class="small muted">by ${r.author_name ?? 'User'}・${dateStr}</p>
-      </div>`;
+        <div class="card" style="display:block">
+          <div style="font-weight:600;margin-bottom:6px">
+            ${stars(r.rating)} <span class="small muted">${Number(r.rating).toFixed(1)}/5</span>
+          </div>
+          <p style="margin:8px 0;color:#000">${(r.text || '').replace(/\n/g,'<br>')}</p>
+          <p class="small muted">by ${r.author_name ?? 'User'}・${dateStr}</p>
+        </div>`;
     }).join('');
   }
 
-  function renderList(){
-    const list = document.getElementById('reviews-list');
-    const moreBtn = document.getElementById('btn-more-reviews');
-    const shown = allReviews.slice(0, visibleCount);
-    list.classList.add('blog-list');
-    list.innerHTML = reviewsToHTML(shown);
-    moreBtn.style.display = (visibleCount < allReviews.length) ? '' : 'none';
-  }
-
   function renderReviews(details){
-    const list = document.getElementById('reviews-list');
-    const note = document.getElementById('reviews-note');
-    const writeBtn = document.getElementById('btn-write-review');
+    const list   = document.getElementById('reviews-list');
+    const note   = document.getElementById('reviews-note');
+    const write  = document.getElementById('btn-write-review');
+    const more   = document.getElementById('btn-more-reviews');
 
-    // 書くボタン
-    writeBtn.href = `https://search.google.com/local/writereview?placeid=${encodeURIComponent(PLACE_ID)}`;
+    // 「口コミを書く」ボタン
+    write.href = `https://search.google.com/local/writereview?placeid=${encodeURIComponent(PLACE_ID)}`;
 
-    allReviews = (details.reviews || []);
+    allReviews = (details.reviews || []); // APIからは最大5件
     if (!allReviews.length){
       list.innerHTML = '<p class="muted">まだ表示できる口コミがありません。</p>';
       note.textContent = '';
-      document.getElementById('btn-more-reviews').style.display = 'none';
+      more.style.display = 'none';
       return;
     }
 
-    renderList();
+    // 取得分（最大5件）を表示
+    list.classList.add('blog-list');
+    list.innerHTML = reviewsToHTML(allReviews);
+
+    // 総数が取得件数より多ければ「Googleでさらに見る」へ誘導
+    const total = Number(details.user_ratings_total || 0);
+    if (total > allReviews.length){
+      more.style.display = '';
+      more.textContent = 'Googleでさらに見る';
+      more.onclick = () => {
+        // 一覧（読む）に飛ばす（投稿ではなく一覧）
+        location.href = `https://search.google.com/local/reviews?placeid=${encodeURIComponent(PLACE_ID)}`;
+      };
+    } else {
+      more.style.display = 'none';
+    }
 
     if (details.rating && details.user_ratings_total){
       note.textContent = `Googleレビュー 平均 ${Number(details.rating).toFixed(1)}（${details.user_ratings_total}件）`;
     }
   }
 
-  // もっと見る
-  document.addEventListener('click', (e) => {
-    if (e.target && e.target.id === 'btn-more-reviews'){
-      visibleCount += STEP;
-      renderList();
-    }
-  });
-
-  // Placesから取得
   function initReviews(){
     const svc = new google.maps.places.PlacesService(document.createElement('div'));
     svc.getDetails(
