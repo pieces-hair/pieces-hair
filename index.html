@@ -43,6 +43,9 @@
     .slideshow{ position:relative; width:100%; overflow:hidden; border-radius:12px }
     .slideshow img{ position:absolute; inset:0; width:100%; height:auto; object-fit:cover; opacity:0; transition:opacity 1.2s ease-in-out }
     .slideshow img.active{ opacity:1; z-index:1 }
+    /* 口コミアクション行の軽い整形 */
+    #reviews-actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+    #reviews-actions .btn{ min-width:160px; }
   </style>
 </head>
 
@@ -126,6 +129,10 @@
     <h2>reviews</h2>
     <div id="reviews-list" class="cards"></div>
     <p class="small muted" id="reviews-note"></p>
+    <div class="cta cta-row" id="reviews-actions">
+      <a id="btn-write-review" class="btn" target="_blank" rel="noopener" href="#">Googleで口コミを書く</a>
+      <button id="btn-more-reviews" class="btn" style="display:none;">もっと見る</button>
+    </div>
   </section>
 
   <!-- MENU -->
@@ -262,37 +269,76 @@
   })();
 </script>
 
-<!-- Google レビュー：設定＋描画（キーはここ“だけ”に書く） -->
+<!-- Google レビュー：ボタン＆もっと見る付き -->
 <script>
-  // ★ここを本物に置き換え
+  // ★ここだけ差し替え（すでにあなたの値）
   const GOOGLE_API_KEY = "AIzaSyCfZZAP0_T3ABrTXjBdZAdcCbvvdXBwIKU";
-const PLACE_ID       = "ChIJN6a9nFSdGGARkhoyfbQBhmo"; //
+  const PLACE_ID       = "ChIJN6a9nFSdGGARkhoyfbQBhmo";
+
+  // 状態
+  let allReviews = [];
+  let visibleCount = 6;
+  const STEP = 6;
+
   const stars = n => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n));
+
+  function reviewsToHTML(arr){
+    return arr.map(r => {
+      const ts = r.time ? new Date(r.time * 1000) : null;
+      const dateStr = ts ? ts.toLocaleDateString('ja-JP')
+                         : (r.relative_time_description || '');
+      return `
+      <div class="card" style="display:block">
+        <div style="font-weight:600;margin-bottom:6px">
+          ${stars(r.rating)} <span class="small muted">${Number(r.rating).toFixed(1)}/5</span>
+        </div>
+        <p style="margin:8px 0;color:#000">${(r.text || '').replace(/\n/g,'<br>')}</p>
+        <p class="small muted">by ${r.author_name ?? 'User'}・${dateStr}</p>
+      </div>`;
+    }).join('');
+  }
+
+  function renderList(){
+    const list = document.getElementById('reviews-list');
+    const moreBtn = document.getElementById('btn-more-reviews');
+    const shown = allReviews.slice(0, visibleCount);
+    list.classList.add('blog-list');
+    list.innerHTML = reviewsToHTML(shown);
+    moreBtn.style.display = (visibleCount < allReviews.length) ? '' : 'none';
+  }
 
   function renderReviews(details){
     const list = document.getElementById('reviews-list');
     const note = document.getElementById('reviews-note');
-    const revs = (details.reviews || []).slice(0, 6);
+    const writeBtn = document.getElementById('btn-write-review');
 
-    if (!revs.length){
+    // 書くボタン
+    writeBtn.href = `https://search.google.com/local/writereview?placeid=${encodeURIComponent(PLACE_ID)}`;
+
+    allReviews = (details.reviews || []);
+    if (!allReviews.length){
       list.innerHTML = '<p class="muted">まだ表示できる口コミがありません。</p>';
       note.textContent = '';
+      document.getElementById('btn-more-reviews').style.display = 'none';
       return;
     }
-    list.classList.add('blog-list');
-    list.innerHTML = revs.map(r => `
-      <div class="card" style="display:block">
-        <div style="font-weight:600;margin-bottom:6px">${stars(r.rating)} <span class="small muted">${r.rating.toFixed(1)}/5</span></div>
-        <p style="margin:8px 0;color:#000">${(r.text || '').replace(/\n/g,'<br>')}</p>
-        <p class="small muted">by ${r.author_name}・${new Date(r.time*1000).toLocaleDateString('ja-JP')}</p>
-      </div>
-    `).join('');
+
+    renderList();
 
     if (details.rating && details.user_ratings_total){
-      note.textContent = `Googleレビュー 平均 ${details.rating.toFixed(1)}（${details.user_ratings_total}件）`;
+      note.textContent = `Googleレビュー 平均 ${Number(details.rating).toFixed(1)}（${details.user_ratings_total}件）`;
     }
   }
 
+  // もっと見る
+  document.addEventListener('click', (e) => {
+    if (e.target && e.target.id === 'btn-more-reviews'){
+      visibleCount += STEP;
+      renderList();
+    }
+  });
+
+  // Placesから取得
   function initReviews(){
     const svc = new google.maps.places.PlacesService(document.createElement('div'));
     svc.getDetails(
@@ -301,6 +347,7 @@ const PLACE_ID       = "ChIJN6a9nFSdGGARkhoyfbQBhmo"; //
         if (status !== google.maps.places.PlacesServiceStatus.OK){
           console.error('Places getDetails error:', status);
           document.getElementById('reviews-list').innerHTML = '<p class="muted">口コミの取得に失敗しました。</p>';
+          document.getElementById('btn-more-reviews').style.display = 'none';
           return;
         }
         renderReviews(place);
@@ -308,12 +355,11 @@ const PLACE_ID       = "ChIJN6a9nFSdGGARkhoyfbQBhmo"; //
     );
   }
 
-  // Maps JavaScript API を“1回だけ”動的読込（キーの二重記載を防ぐ）
+  // Maps JavaScript API を動的読込（キーはここだけ）
   (function loadMaps(){
     const s = document.createElement('script');
     s.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(GOOGLE_API_KEY)}&libraries=places&language=ja&callback=initReviews`;
-    s.async = true;
-    s.defer = true;
+    s.async = true; s.defer = true;
     document.head.appendChild(s);
   })();
 </script>
