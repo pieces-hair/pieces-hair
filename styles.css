@@ -8,7 +8,13 @@
   --paper:#fff;
   --accent:#1F9AA0;
   --accent-darker:#17807B;
-  --headerH:90px; /* 固定ヘッダー高さ(PC) */
+
+  /* JSで実寸に上書きされる想定（初期値だけセット） */
+  --headerH:90px;
+
+  /* ← 全ページでの“止まり位置”はココだけ弄れば全セクション揃う
+     ＋にすると下寄せ、－にするとさらに上で止まる */
+  --anchorOffset:12px;
 }
 
 /* ===== ベース ===== */
@@ -25,17 +31,13 @@ img{ max-width:100%; height:auto; display:block; }
 a{ color:var(--accent); text-decoration:none; }
 .wrap{ max-width:1120px; margin:auto; padding:0 22px; }
 
-/* ===== アンカー位置調整（ずれ防止） ===== */
-/* スクロールは滑らかに。実際の停止位置は各セクションの scroll-margin-top で制御 */
-html{
-  scroll-behavior:smooth;
-  scroll-padding-top:0;
-}
+/* ===== アンカー停止（全セクション統一） ===== */
+html{ scroll-behavior:smooth; scroll-padding-top:0; }
 .section{
   padding:72px 0;
   border-top:1px solid var(--line);
-  /* ヘッダー高さ + 余白ぶんで止める（共通） */
-  scroll-margin-top:calc(var(--headerH) - 20px) !important;
+  /* 全セクション同じ停止ライン */
+  scroll-margin-top: calc(var(--headerH) + var(--anchorOffset)) !important;
 }
 .section.alt{ background:var(--bg-soft); }
 .section h2{
@@ -98,10 +100,10 @@ html{
   box-shadow:0 4px 12px rgba(0,0,0,.12);
 }
 
-/* ===== スライドショー（高さしっかり保証） ===== */
+/* ===== スライドショー（高さ保証） ===== */
 .slideshow{
   position:relative; width:100%;
-  aspect-ratio:16 / 9;            /* 高さを確保 */
+  aspect-ratio:16 / 9;
   overflow:hidden; border-radius:12px;
 }
 .slideshow img{
@@ -111,12 +113,10 @@ html{
   opacity:0; transition:opacity 1.2s ease-in-out;
 }
 .slideshow img.active{ opacity:1; z-index:1; }
-/* 古いiOS等の aspect-ratio 非対応対策 */
 @supports not (aspect-ratio: 16 / 9){
   .slideshow::before{ content:""; display:block; padding-top:56.25%; }
   .slideshow > img{ position:absolute; top:0; left:0; right:0; bottom:0; }
 }
-/* すごく小さい画面は少し縦長に */
 @media (max-width:420px){
   .slideshow{ aspect-ratio:4 / 3; }
 }
@@ -196,7 +196,7 @@ footer a{ color:#fff; text-decoration:underline; }
 
 /* ===== スマホ調整 ===== */
 @media (max-width:720px){
-  :root{ --headerH:72px; } /* アンカー補正も連動 */
+  :root{ --headerH:72px; } /* stickyヘッダーが低くなる想定 */
 
   .nav{ flex-wrap:wrap; align-items:flex-start; height:auto; padding:8px 12px; }
   .brand{ flex:1 0 100%; gap:10px; margin-left:0; }
@@ -214,15 +214,4 @@ footer a{ color:#fff; text-decoration:underline; }
 a:focus,button:focus,.btn:focus{
   outline:3px solid color-mix(in srgb, var(--accent) 50%, #fff 50%);
   outline-offset:2px;
-}
-
-/* ===== reviews の停止位置をピタッと合わせる（blogが見えない地点） ===== */
-/* 見出しをヘッダー直下にぴったり */
-#reviews.section{
-  scroll-margin-top: calc(var(--headerH) + 0px) !important;
-}
-@media (max-width:720px){
-  #reviews.section{
-    scroll-margin-top: calc(var(--headerH) - 10px) !important;
-  }
 }
