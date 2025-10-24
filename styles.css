@@ -1,4 +1,4 @@
-/* ===== pieces 統一スタイル（完全版）===== */
+/* ===== pieces 統一スタイル（完全版）===================================== */
 :root{
   --ink:#1c1c1c;
   --muted:#6f6f6f;
@@ -12,7 +12,7 @@
 }
 
 /* ===== ベース ===== */
-*{box-sizing:border-box}
+*{ box-sizing:border-box; }
 html,body{
   margin:0;
   background:var(--bg);
@@ -21,12 +21,12 @@ html,body{
   text-rendering:optimizeLegibility;
   -webkit-font-smoothing:antialiased;
 }
-img{max-width:100%; height:auto; display:block}
-a{color:var(--accent); text-decoration:none}
-.wrap{max-width:1120px; margin:auto; padding:0 22px}
+img{ max-width:100%; height:auto; display:block; }
+a{ color:var(--accent); text-decoration:none; }
+.wrap{ max-width:1120px; margin:auto; padding:0 22px; }
 
-/* ===== アンカー位置調整（ずれ防止＆上寄せ） ===== */
-/* スクロールアニメは滑らかに。上寄せは各セクションの scroll-margin-top で行う */
+/* ===== アンカー位置調整（ずれ防止） ===== */
+/* スクロールは滑らかに。実際の停止位置は各セクションの scroll-margin-top で制御 */
 html{
   scroll-behavior:smooth;
   scroll-padding-top:0;
@@ -34,84 +34,105 @@ html{
 .section{
   padding:72px 0;
   border-top:1px solid var(--line);
-  /* 既定はやや上寄せ（ヘッダーぶんより少し上に止める）*/
-  scroll-margin-top:calc(var(--headerH) - 110px) !important; /* 90-110 = -20px */
+  /* ヘッダー高さ + 余白ぶんで止める（共通） */
+  scroll-margin-top:calc(var(--headerH) + 12px) !important;
 }
-.section.alt{background:var(--bg-soft)}
+.section.alt{ background:var(--bg-soft); }
 .section h2{
-  position:relative; display:inline-block; padding-bottom:6px;
-  color:#000; font-weight:600; font-size:26px; margin:0 0 18px;
+  position:relative; display:inline-block;
+  margin:0 0 18px; padding-bottom:6px;
+  color:#000; font-weight:600; font-size:26px;
 }
 .section h2::after{
-  content:""; position:absolute; left:0; bottom:0; width:48px; height:3px;
-  background:var(--accent); border-radius:2px; opacity:.9;
+  content:""; position:absolute; left:0; bottom:0;
+  width:48px; height:3px; border-radius:2px; opacity:.9;
+  background:var(--accent);
 }
 
 /* ===== ヘッダー ===== */
 .header{
   position:sticky; top:0; z-index:50;
-  background:rgba(255,255,255,.92); backdrop-filter:blur(10px);
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(10px);
   border-bottom:1px solid var(--line);
 }
-.nav{display:flex; align-items:center; justify-content:space-between; height:90px; padding:0 20px;}
-.brand{display:flex; align-items:center; gap:14px; margin-left:0;}
-.brand img{max-height:72px; width:auto; object-fit:contain; border-radius:12px;}
-.brand span{font-size:24px; font-weight:700; color:#000; letter-spacing:.02em;}
-.menu{display:flex; gap:22px;}
-.menu a{color:#000; font-weight:500; position:relative; padding-bottom:6px;}
-.menu a::after{
-  content:""; position:absolute; left:0; bottom:0; width:0; height:2px;
-  background:var(--accent); transition:width .2s ease;
+.nav{
+  display:flex; align-items:center; justify-content:space-between;
+  height:90px; padding:0 20px;
 }
-.menu a:hover::after{width:100%}
+.brand{ display:flex; align-items:center; gap:14px; margin-left:0; }
+.brand img{ max-height:72px; width:auto; object-fit:contain; border-radius:12px; }
+.brand span{ font-size:24px; font-weight:700; color:#000; letter-spacing:.02em; }
+.menu{ display:flex; gap:22px; }
+.menu a{
+  color:#000; font-weight:500; position:relative; padding-bottom:6px;
+}
+.menu a::after{
+  content:""; position:absolute; left:0; bottom:0;
+  width:0; height:2px; background:var(--accent);
+  transition:width .2s ease;
+}
+.menu a:hover::after{ width:100%; }
 
 /* ===== HERO ===== */
 .hero{
-  display:grid; grid-template-columns:1.1fr 1fr; gap:28px; align-items:center; padding:72px 0;
+  display:grid; grid-template-columns:1.1fr 1fr;
+  gap:28px; align-items:center; padding:72px 0;
 }
-@media (max-width:980px){ .hero{grid-template-columns:1fr} }
-.cta-row{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+@media (max-width:980px){
+  .hero{ grid-template-columns:1fr; }
+}
+.cta-row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
 .hero a[href*="tel"],
 .hero a[href*="instagram"],
 .hero a[href*="pieces_hairsalon"],
 .hero a[href*="maps.google.com"]{
   display:inline-block; background:#fff; color:#000;
-  border:1px solid rgba(0,0,0,.6); border-radius:30px; padding:10px 22px;
+  border:1px solid rgba(0,0,0,.6);
+  border-radius:30px; padding:10px 22px;
   font-weight:500; font-size:15px; text-decoration:none;
   transition:all .25s ease; box-shadow:0 2px 6px rgba(0,0,0,.04);
 }
 .hero a:hover{
-  background:#000; color:#fff; border-color:#000; box-shadow:0 4px 12px rgba(0,0,0,.12);
+  background:#000; color:#fff; border-color:#000;
+  box-shadow:0 4px 12px rgba(0,0,0,.12);
 }
 
-/* ===== スライドショー（高さしっかり版） ===== */
+/* ===== スライドショー（高さしっかり保証） ===== */
 .slideshow{
   position:relative; width:100%;
-  aspect-ratio:16 / 9; /* 高さ確保 */
+  aspect-ratio:16 / 9;            /* 高さを確保 */
   overflow:hidden; border-radius:12px;
 }
 .slideshow img{
-  position:absolute; inset:0; width:100%; height:100%;
-  object-fit:cover; opacity:0; transition:opacity 1.2s ease-in-out;
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  opacity:0; transition:opacity 1.2s ease-in-out;
 }
-.slideshow img.active{opacity:1; z-index:1;}
+.slideshow img.active{ opacity:1; z-index:1; }
+/* 古いiOS等の aspect-ratio 非対応対策 */
 @supports not (aspect-ratio: 16 / 9){
-  .slideshow::before{content:""; display:block; padding-top:56.25%;}
-  .slideshow > img{position:absolute; top:0; left:0; right:0; bottom:0;}
+  .slideshow::before{ content:""; display:block; padding-top:56.25%; }
+  .slideshow > img{ position:absolute; top:0; left:0; right:0; bottom:0; }
 }
-@media (max-width:420px){ .slideshow{aspect-ratio:4 / 3;} }
+/* すごく小さい画面は少し縦長に */
+@media (max-width:420px){
+  .slideshow{ aspect-ratio:4 / 3; }
+}
 
 /* ===== カード ===== */
-.cards{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
-@media (max-width:900px){ .cards{grid-template-columns:1fr} }
+.cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+@media (max-width:900px){ .cards{ grid-template-columns:1fr; } }
 .card{
   border:1px solid #e7f2f1; border-radius:18px; padding:22px; background:var(--paper);
   box-shadow:0 8px 24px rgba(23,128,123,.08);
 }
-.staff .card img{border-radius:12px; border:1px solid var(--line)}
-.gallery{display:grid; grid-template-columns:1fr 1fr; gap:22px}
-@media (max-width:900px){ .gallery{grid-template-columns:1fr} }
-.muted{color:var(--muted)} .small{font-size:12px}
+.staff .card img{ border-radius:12px; border:1px solid var(--line); }
+.gallery{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+@media (max-width:900px){ .gallery{ grid-template-columns:1fr; } }
+.muted{ color:var(--muted); }
+.small{ font-size:12px; }
 
 /* ===== ボタン ===== */
 .btn{
@@ -119,19 +140,19 @@ html{
   border-radius:28px; padding:12px 18px; font-weight:500;
   transition:background .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s;
 }
-.btn:hover{border-color:var(--accent-darker); color:var(--accent-darker)}
+.btn:hover{ border-color:var(--accent-darker); color:var(--accent-darker); }
 .btn.fill{
-  background:var(--accent); color:#fff; border-radius:30px; padding:14px 24px; font-weight:500;
-  transition:all .25s ease;
+  background:var(--accent); color:#fff; border-radius:30px;
+  padding:14px 24px; font-weight:500; transition:all .25s ease;
 }
-.btn.fill:hover{background:var(--accent-darker)}
+.btn.fill:hover{ background:var(--accent-darker); }
 
 /* ===== concept（背景＋透かし） ===== */
-#concept.section{background:#bdecf5; position:relative; color:#000; overflow:hidden}
-#concept.section h2{color:#000}
-#concept.section h2::after{background:#fff}
-#concept.section p{color:#000; font-size:18px; line-height:1.8; font-weight:500; margin-bottom:10px}
-#concept.section .muted{color:#000; opacity:.9; font-size:15px}
+#concept.section{ background:#bdecf5; position:relative; color:#000; overflow:hidden; }
+#concept.section h2{ color:#000; }
+#concept.section h2::after{ background:#fff; }
+#concept.section p{ color:#000; font-size:18px; line-height:1.8; font-weight:500; margin-bottom:10px; }
+#concept.section .muted{ color:#000; opacity:.9; font-size:15px; }
 #concept.section::before{
   content:""; position:absolute; top:50%; left:50%; width:320px; height:320px;
   background:url("images/concept-bg.png") no-repeat center/contain;
@@ -139,7 +160,7 @@ html{
   filter:hue-rotate(170deg) saturate(150%) brightness(1.1);
   pointer-events:none; z-index:0;
 }
-#concept.section > *{position:relative; z-index:1}
+#concept.section > *{ position:relative; z-index:1; }
 
 /* ===== gallery CTA ===== */
 #gallery a[href*="instagram.com/pieces_hairsalon"]{
@@ -147,17 +168,17 @@ html{
   border:none; border-radius:30px; padding:12px 24px; font-weight:500; font-size:15px;
   text-decoration:none; transition:all .25s ease;
 }
-#gallery a[href*="instagram.com/pieces_hairsalon"]:hover{background:var(--accent-darker)}
+#gallery a[href*="instagram.com/pieces_hairsalon"]:hover{ background:var(--accent-darker); }
 
 /* ===== MENU 金額整列 ===== */
-#menu .card ul{list-style:none; padding:0; margin:0}
+#menu .card ul{ list-style:none; padding:0; margin:0; }
 #menu .card li{
   display:flex; justify-content:space-between; align-items:baseline;
   border-bottom:1px dotted #e5e5e5; padding:6px 0; font-size:16px; line-height:1.8;
 }
-#menu .card li .price{flex-shrink:0; width:90px; text-align:right}
+#menu .card li .price{ flex-shrink:0; width:90px; text-align:right; }
 
-/* ===== staff トップを黒で統一 ===== */
+/* ===== staff トップの文字色を黒で統一 ===== */
 #staff.section { color:#000; }
 #staff.section h2,
 #staff.section p,
@@ -171,20 +192,22 @@ footer{
   background:var(--accent); color:#fff; padding:24px 0; text-align:center;
   font-size:14px; letter-spacing:.05em;
 }
-footer a{color:#fff; text-decoration:underline}
+footer a{ color:#fff; text-decoration:underline; }
 
 /* ===== スマホ調整 ===== */
 @media (max-width:720px){
   :root{ --headerH:72px; } /* アンカー補正も連動 */
 
-  .nav{flex-wrap:wrap; align-items:flex-start; height:auto; padding:8px 12px;}
-  .brand{flex:1 0 100%; gap:10px; margin-left:0;}
-  .brand img{max-height:56px}
-  .brand span{font-size:20px}
-  .menu{flex:1 0 100%; display:flex; flex-wrap:wrap; gap:14px; margin-top:6px; justify-content:flex-start;}
-
-  .cards{grid-template-columns:1fr}
-  .cta-row{justify-content:center}
+  .nav{ flex-wrap:wrap; align-items:flex-start; height:auto; padding:8px 12px; }
+  .brand{ flex:1 0 100%; gap:10px; margin-left:0; }
+  .brand img{ max-height:56px; }
+  .brand span{ font-size:20px; }
+  .menu{
+    flex:1 0 100%; display:flex; flex-wrap:wrap; gap:14px;
+    margin-top:6px; justify-content:flex-start;
+  }
+  .cards{ grid-template-columns:1fr; }
+  .cta-row{ justify-content:center; }
 }
 
 /* ===== アクセシビリティ ===== */
@@ -193,13 +216,13 @@ a:focus,button:focus,.btn:focus{
   outline-offset:2px;
 }
 
-/* ===== セクションのアンカー位置を正しく止める（reviews専用） =====
-   → reviewsへ飛んだとき、直前の blog カードが見えない地点で停止 */
+/* ===== reviews の停止位置をピタッと合わせる（blogが見えない地点） ===== */
 #reviews.section{
-  scroll-margin-top: calc(-1 * (var(--headerH) + 60px)) !important; /* もっと上に */
+  /* 共通より少し下で止める = 上に余白を足す */
+  scroll-margin-top:calc(var(--headerH) + 32px) !important;
 }
 @media (max-width:720px){
   #reviews.section{
-    scroll-margin-top: calc(-1 * (var(--headerH) + 20px)) !important; /* モバイルは少し弱め */
+    scroll-margin-top:calc(var(--headerH) + 20px) !important;
   }
 }
