@@ -163,7 +163,7 @@
         </table>
 
         <div class="badges" aria-label="得意ジャンル">
-          <span class="badge"></span>
+          <span class="badge">縮毛矯正</span>
           <span class="badge">くせ活かし</span>
           <span class="badge">丁寧なカウンセリング</span>
           <span class="badge">美髪ケア</span>
@@ -207,5 +207,43 @@
     })();
   </script>
 </body>
-</html></body>
+</html>
+  <!-- ✅ 共通リンク補正スクリプト -->
+  <script>
+    // ローカル(file://)と本番(https://pieces-hair.github.io/pieces-hair/)でリンク先を自動補正
+    (function() {
+      const base = location.protocol === "file:" ? ".." : "/pieces-hair";
+      document.querySelectorAll('a[data-link]').forEach(a => {
+        a.href = base + a.getAttribute('data-link');
+      });
+    })();
+  </script>
+</body>
+  <!-- ✅ 共通リンク補正スクリプト -->
+  <script>
+    // ローカル(file://)と本番(https://pieces-hair.github.io/pieces-hair/)でリンク先を自動補正
+    (function() {
+      const base = location.protocol === "file:" ? ".." : "/pieces-hair";
+      document.querySelectorAll('a[data-link]').forEach(a => {
+        a.href = base + a.getAttribute('data-link');
+      });
+    })();
+  </script>
+
+  <!-- ✅ スマホ時のスタッフ詳細の左余白調整 -->
+  <style>
+    @media (max-width: 768px){
+      .wrap, .staff-detail {
+        padding-left: 18px; /* ←左にゆとり追加 */
+        padding-right: 18px; /* バランス調整用 */
+      }
+
+      /* 特にタグやボタンの位置を補正したい場合 */
+      .staff-detail .btn,
+      .staff-detail .tag {
+        margin-left: 4px; /* 左に寄りすぎ防止 */
+      }
+    }
+  </style>
+</body>
 </html>
