@@ -398,7 +398,7 @@
         if (!el) return;
         const headerH = document.querySelector(".header")?.offsetHeight || 80;
         const rect = el.getBoundingClientRect().top + window.scrollY;
-        window.scrollTo({ top: rect - headerH - 50, behavior: "auto" }); // -20は好みで調整
+        window.scrollTo({ top: rect - headerH - 90, behavior: "auto" }); // -20は好みで調整
       });
     }
   });

@@ -35,7 +35,7 @@ html{
   padding:72px 0;
   border-top:1px solid var(--line);
   /* ヘッダー高さ + 余白ぶんで止める（共通） */
-  scroll-margin-top:calc(var(--headerH) + 12px) !important;
+  scroll-margin-top:calc(var(--headerH) - 20px) !important;
 }
 .section.alt{ background:var(--bg-soft); }
 .section h2{
