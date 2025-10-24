@@ -207,6 +207,21 @@
       });
     })();
   </script>
+
+  <!-- ✅ スマホ時のスタッフ詳細の左余白調整 -->
+  <style>
+    @media (max-width: 768px){
+      .wrap, .staff-detail {
+        padding-left: 18px; /* ←左にゆとり追加 */
+        padding-right: 18px; /* バランス調整用 */
+      }
+
+      /* 特にタグやボタンの位置を補正したい場合 */
+      .staff-detail .btn,
+      .staff-detail .tag {
+        margin-left: 4px; /* 左に寄りすぎ防止 */
+      }
+    }
+  </style>
 </body>
-</html></body>
 </html>
