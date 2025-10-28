@@ -76,35 +76,83 @@ html{ scroll-behavior:smooth; scroll-padding-top:0; }
 }
 .menu a:hover::after{ width:100%; }
 
-/* ===== HERO ===== */
+/* ===== HERO（画像上に白文字を重ねる・完全版） ===== */
 .hero{
-  display:grid; grid-template-columns:1.1fr 1fr;
-  gap:28px; align-items:center; padding:72px 0;
+  position:relative;
+  min-height:calc(100svh - var(--headerH));
+  display:flex; align-items:center; justify-content:center;
+  isolation:isolate; background:#000; overflow:hidden;
 }
-@media (max-width:980px){
-  .hero{ grid-template-columns:1fr; }
+.hero-bg{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover; object-position:center;
+  transform:translateZ(0);
 }
-.cta-row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
-.hero a[href*="tel"],
-.hero a[href*="instagram"],
-.hero a[href*="pieces_hairsalon"],
-.hero a[href*="maps.google.com"]{
-  display:inline-block; background:#fff; color:#000;
-  border:1px solid rgba(0,0,0,.6);
-  border-radius:30px; padding:10px 22px;
-  font-weight:500; font-size:15px; text-decoration:none;
-  transition:all .25s ease; box-shadow:0 2px 6px rgba(0,0,0,.04);
+.hero-overlay{
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.45));
+  z-index:0;
 }
-.hero a:hover{
-  background:#000; color:#fff; border-color:#000;
-  box-shadow:0 4px 12px rgba(0,0,0,.12);
+.hero-text{
+  position:relative; z-index:1;
+  width:min(100%, 980px);
+  text-align:center;
+  padding:clamp(16px, 3vw, 40px);
+  color:#fff;
+  text-shadow:0 2px 8px rgba(0,0,0,.35);
 }
+.hero-kicker{
+  margin:0 0 .6em;
+  font-size:clamp(14px, 2.2vw, 22px);
+  letter-spacing:.18em;
+  font-weight:600;
+  opacity:.95;
+}
+.hero-logo{
+  display:block;
+  margin-inline:auto;
+  /* ★ロゴの最適サイズ：画面幅に追従し最大360pxまで */
+  width:clamp(180px, 28vw, 360px);
+  height:auto;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.35));
+}
+.hero-sub{
+  margin:.9em auto 1.4em;
+  font-size:clamp(14px, 2.4vw, 18px);
+  line-height:1.7;
+  max-width:38em;
+  opacity:.95;
+}
+.btn{
+  display:inline-block; border:1px solid var(--accent); color:var(--accent);
+  border-radius:28px; padding:12px 18px; font-weight:500;
+  transition:background .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s;
+}
+.btn:hover{ border-color:var(--accent-darker); color:var(--accent-darker); }
+.btn.fill{
+  background:var(--accent); color:#fff; border-radius:30px;
+  padding:14px 24px; font-weight:500; transition:all .25s ease;
+}
+.btn.fill:hover{ background:var(--accent-darker); }
+.hero-cta{
+  display:inline-block;
+  padding:.8em 1.4em;
+  border-radius:999px;
+  background:var(--accent);
+  color:#fff; font-weight:600;
+  border:1px solid rgba(255,255,255,.2);
+  transition:transform .08s ease, opacity .2s ease;
+}
+.hero-cta:hover{ transform:translateY(-1px); opacity:.95; }
 
-/* ===== スライドショー（高さ保証） ===== */
+/* ===== スライドショー（使う場合の高さ保証） ===== */
+/* 既存の .slideshow をヒーロー背景として使うなら、.hero-bg の代わりに
+   .slideshow を hero 内に置き、.slideshow img.active を透過切替すればOK */
 .slideshow{
-  position:relative; width:100%;
-  aspect-ratio:16 / 9;
-  overflow:hidden; border-radius:12px;
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  overflow:hidden;
 }
 .slideshow img{
   position:absolute; inset:0;
@@ -113,13 +161,6 @@ html{ scroll-behavior:smooth; scroll-padding-top:0; }
   opacity:0; transition:opacity 1.2s ease-in-out;
 }
 .slideshow img.active{ opacity:1; z-index:1; }
-@supports not (aspect-ratio: 16 / 9){
-  .slideshow::before{ content:""; display:block; padding-top:56.25%; }
-  .slideshow > img{ position:absolute; top:0; left:0; right:0; bottom:0; }
-}
-@media (max-width:420px){
-  .slideshow{ aspect-ratio:4 / 3; }
-}
 
 /* ===== カード ===== */
 .cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
@@ -133,19 +174,6 @@ html{ scroll-behavior:smooth; scroll-padding-top:0; }
 @media (max-width:900px){ .gallery{ grid-template-columns:1fr; } }
 .muted{ color:var(--muted); }
 .small{ font-size:12px; }
-
-/* ===== ボタン ===== */
-.btn{
-  display:inline-block; border:1px solid var(--accent); color:var(--accent);
-  border-radius:28px; padding:12px 18px; font-weight:500;
-  transition:background .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s;
-}
-.btn:hover{ border-color:var(--accent-darker); color:var(--accent-darker); }
-.btn.fill{
-  background:var(--accent); color:#fff; border-radius:30px;
-  padding:14px 24px; font-weight:500; transition:all .25s ease;
-}
-.btn.fill:hover{ background:var(--accent-darker); }
 
 /* ===== concept（背景＋透かし） ===== */
 #concept.section{ background:#bdecf5; position:relative; color:#000; overflow:hidden; }
@@ -206,12 +234,61 @@ footer a{ color:#fff; text-decoration:underline; }
     flex:1 0 100%; display:flex; flex-wrap:wrap; gap:14px;
     margin-top:6px; justify-content:flex-start;
   }
-  .cards{ grid-template-columns:1fr; }
-  .cta-row{ justify-content:center; }
+
+  /* ★Heroスマホ最適化 */
+  .hero{ min-height:calc(100svh - var(--headerH)); }
+  .hero-kicker{ letter-spacing:.14em; }
+  .hero-sub{ margin:.7em auto 1.2em; }
+  .hero-cta{ padding:.72em 1.2em; }
+}
+
+/* iOSノッチの安全域 */
+@supports(padding:max(0px)){
+  .hero-text{ padding-bottom:calc(clamp(16px,3vw,40px) + env(safe-area-inset-bottom)); }
 }
 
 /* ===== アクセシビリティ ===== */
 a:focus,button:focus,.btn:focus{
   outline:3px solid color-mix(in srgb, var(--accent) 50%, #fff 50%);
   outline-offset:2px;
+}/* ===== Hero ロゴ強調（上書き） ===== */
+.hero-logo{
+  /* 旧: clamp(180px, 28vw, 360px) → 大幅UP */
+  width: clamp(240px, 40vw, 560px);
 }
+
+.hero-kicker{
+  /* ロゴが主役になるように控えめサイズ＆余白圧縮 */
+  font-size: clamp(12px, 1.6vw, 18px);
+  margin: 0 0 .4em;
+  letter-spacing: .16em;
+}
+
+.hero-sub{
+  /* ロゴ直下の説明も少し控えめに */
+  font-size: clamp(13px, 1.9vw, 17px);
+  margin: .6em auto 1.1em;
+  max-width: 36em;
+}
+
+/* デスクトップではさらに大きく（スマホは据え置き） */
+@media (min-width: 960px){
+  .hero-logo{ width: min(52vw, 600px); }
+}
+
+/* ロゴを大きくしても可読性が落ちないように暗幕を少し強める */
+.hero-overlay{
+  background: linear-gradient(180deg, rgba(0,0,0,.42), rgba(0,0,0,.52));
+}/* ===== hero-kicker（KASHIWA · HAIR SALON） ===== */
+.hero-kicker {
+  font-family: "Josefin Sans", "Noto Sans JP", sans-serif;
+  font-weight: 300; /* 軽くて優しい印象 */
+  font-size: clamp(14px, 1.8vw, 20px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.92);
+  margin-bottom: 0.5em;
+}
+
+/* Google Fonts読み込み（head内に追加） */
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400&display=swap');
