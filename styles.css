@@ -9,158 +9,86 @@
   --accent:#1F9AA0;
   --accent-darker:#17807B;
 
-  /* JSで実寸に上書きされる想定（初期値だけセット） */
-  --headerH:90px;
-
-  /* ← 全ページでの“止まり位置”はココだけ弄れば全セクション揃う
-     ＋にすると下寄せ、－にするとさらに上で止まる */
-  --anchorOffset:12px;
+  /* JSで上書きされる想定 */
+  --headerH:90px;             /* 固定ヘッダー高さの基準 */
+  --anchorOffset:-20px;       /* アンカー停止の共通微調整（全セクション統一） */
 }
 
 /* ===== ベース ===== */
 *{ box-sizing:border-box; }
 html,body{
-  margin:0;
-  background:var(--bg);
-  color:var(--ink);
+  margin:0; background:var(--bg); color:var(--ink);
   font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Hiragino Kaku Gothic ProN","メイリオ",Meiryo,sans-serif;
-  text-rendering:optimizeLegibility;
-  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility; -webkit-font-smoothing:antialiased;
 }
 img{ max-width:100%; height:auto; display:block; }
 a{ color:var(--accent); text-decoration:none; }
 .wrap{ max-width:1120px; margin:auto; padding:0 22px; }
 
-/* ===== アンカー停止（全セクション統一） ===== */
+/* ===== アンカー位置調整（全セクション同一） ===== */
 html{ scroll-behavior:smooth; scroll-padding-top:0; }
 .section{
-  padding:72px 0;
-  border-top:1px solid var(--line);
-  /* 全セクション同じ停止ライン */
+  padding:72px 0; border-top:1px solid var(--line);
   scroll-margin-top: calc(var(--headerH) + var(--anchorOffset)) !important;
 }
 .section.alt{ background:var(--bg-soft); }
 .section h2{
-  position:relative; display:inline-block;
-  margin:0 0 18px; padding-bottom:6px;
+  position:relative; display:inline-block; margin:0 0 18px; padding-bottom:6px;
   color:#000; font-weight:600; font-size:26px;
 }
 .section h2::after{
-  content:""; position:absolute; left:0; bottom:0;
-  width:48px; height:3px; border-radius:2px; opacity:.9;
-  background:var(--accent);
+  content:""; position:absolute; left:0; bottom:0; width:48px; height:3px;
+  border-radius:2px; opacity:.9; background:var(--accent);
 }
 
 /* ===== ヘッダー ===== */
 .header{
   position:sticky; top:0; z-index:50;
-  background:rgba(255,255,255,.92);
-  backdrop-filter:blur(10px);
+  background:rgba(255,255,255,.92); backdrop-filter:blur(10px);
   border-bottom:1px solid var(--line);
 }
-.nav{
-  display:flex; align-items:center; justify-content:space-between;
-  height:90px; padding:0 20px;
-}
+.nav{ display:flex; align-items:center; justify-content:space-between; height:90px; padding:0 20px; }
 .brand{ display:flex; align-items:center; gap:14px; margin-left:0; }
 .brand img{ max-height:72px; width:auto; object-fit:contain; border-radius:12px; }
 .brand span{ font-size:24px; font-weight:700; color:#000; letter-spacing:.02em; }
 .menu{ display:flex; gap:22px; }
-.menu a{
-  color:#000; font-weight:500; position:relative; padding-bottom:6px;
-}
+.menu a{ color:#000; font-weight:500; position:relative; padding-bottom:6px; }
 .menu a::after{
-  content:""; position:absolute; left:0; bottom:0;
-  width:0; height:2px; background:var(--accent);
-  transition:width .2s ease;
+  content:""; position:absolute; left:0; bottom:0; width:0; height:2px;
+  background:var(--accent); transition:width .2s ease;
 }
 .menu a:hover::after{ width:100%; }
 
-/* ===== HERO（画像上に白文字を重ねる・完全版） ===== */
+/* ===== HERO ===== */
 .hero{
-  position:relative;
-  min-height:calc(100svh - var(--headerH));
-  display:flex; align-items:center; justify-content:center;
-  isolation:isolate; background:#000; overflow:hidden;
+  display:grid; grid-template-columns:1.1fr 1fr; gap:28px; align-items:center; padding:72px 0;
 }
-.hero-bg{
-  position:absolute; inset:0;
-  width:100%; height:100%;
-  object-fit:cover; object-position:center;
-  transform:translateZ(0);
+@media (max-width:980px){ .hero{ grid-template-columns:1fr; } }
+.cta-row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+.hero a[href*="tel"],
+.hero a[href*="instagram"],
+.hero a[href*="pieces_hairsalon"],
+.hero a[href*="maps.google.com"]{
+  display:inline-block; background:#fff; color:#000; border:1px solid rgba(0,0,0,.6);
+  border-radius:30px; padding:10px 22px; font-weight:500; font-size:15px; text-decoration:none;
+  transition:all .25s ease; box-shadow:0 2px 6px rgba(0,0,0,.04);
 }
-.hero-overlay{
-  position:absolute; inset:0;
-  background:linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.45));
-  z-index:0;
-}
-.hero-text{
-  position:relative; z-index:1;
-  width:min(100%, 980px);
-  text-align:center;
-  padding:clamp(16px, 3vw, 40px);
-  color:#fff;
-  text-shadow:0 2px 8px rgba(0,0,0,.35);
-}
-.hero-kicker{
-  margin:0 0 .6em;
-  font-size:clamp(14px, 2.2vw, 22px);
-  letter-spacing:.18em;
-  font-weight:600;
-  opacity:.95;
-}
-.hero-logo{
-  display:block;
-  margin-inline:auto;
-  /* ★ロゴの最適サイズ：画面幅に追従し最大360pxまで */
-  width:clamp(180px, 28vw, 360px);
-  height:auto;
-  filter:drop-shadow(0 2px 6px rgba(0,0,0,.35));
-}
-.hero-sub{
-  margin:.9em auto 1.4em;
-  font-size:clamp(14px, 2.4vw, 18px);
-  line-height:1.7;
-  max-width:38em;
-  opacity:.95;
-}
-.btn{
-  display:inline-block; border:1px solid var(--accent); color:var(--accent);
-  border-radius:28px; padding:12px 18px; font-weight:500;
-  transition:background .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s;
-}
-.btn:hover{ border-color:var(--accent-darker); color:var(--accent-darker); }
-.btn.fill{
-  background:var(--accent); color:#fff; border-radius:30px;
-  padding:14px 24px; font-weight:500; transition:all .25s ease;
-}
-.btn.fill:hover{ background:var(--accent-darker); }
-.hero-cta{
-  display:inline-block;
-  padding:.8em 1.4em;
-  border-radius:999px;
-  background:var(--accent);
-  color:#fff; font-weight:600;
-  border:1px solid rgba(255,255,255,.2);
-  transition:transform .08s ease, opacity .2s ease;
-}
-.hero-cta:hover{ transform:translateY(-1px); opacity:.95; }
+.hero a:hover{ background:#000; color:#fff; border-color:#000; box-shadow:0 4px 12px rgba(0,0,0,.12); }
 
-/* ===== スライドショー（使う場合の高さ保証） ===== */
-/* 既存の .slideshow をヒーロー背景として使うなら、.hero-bg の代わりに
-   .slideshow を hero 内に置き、.slideshow img.active を透過切替すればOK */
+/* ===== スライドショー（高さしっかり保証） ===== */
 .slideshow{
-  position:absolute; inset:0;
-  width:100%; height:100%;
-  overflow:hidden;
+  position:relative; width:100%; aspect-ratio:16 / 9; overflow:hidden; border-radius:12px;
 }
 .slideshow img{
-  position:absolute; inset:0;
-  width:100%; height:100%;
-  object-fit:cover;
-  opacity:0; transition:opacity 1.2s ease-in-out;
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; opacity:0; transition:opacity 1.2s ease-in-out;
 }
 .slideshow img.active{ opacity:1; z-index:1; }
+@supports not (aspect-ratio: 16 / 9){
+  .slideshow::before{ content:""; display:block; padding-top:56.25%; }
+  .slideshow > img{ position:absolute; top:0; left:0; right:0; bottom:0; }
+}
+@media (max-width:420px){ .slideshow{ aspect-ratio:4 / 3; } }
 
 /* ===== カード ===== */
 .cards{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
@@ -175,6 +103,18 @@ html{ scroll-behavior:smooth; scroll-padding-top:0; }
 .muted{ color:var(--muted); }
 .small{ font-size:12px; }
 
+/* ===== ボタン ===== */
+.btn{
+  display:inline-block; border:1px solid var(--accent); color:var(--accent);
+  border-radius:28px; padding:12px 18px; font-weight:500;
+  transition:background .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s;
+}
+.btn:hover{ border-color:var(--accent-darker); color:var(--accent-darker); }
+.btn.fill{
+  background:var(--accent); color:#fff; border-radius:30px; padding:14px 24px; font-weight:500; transition:all .25s ease;
+}
+.btn.fill:hover{ background:var(--accent-darker); }
+
 /* ===== concept（背景＋透かし） ===== */
 #concept.section{ background:#bdecf5; position:relative; color:#000; overflow:hidden; }
 #concept.section h2{ color:#000; }
@@ -184,17 +124,15 @@ html{ scroll-behavior:smooth; scroll-padding-top:0; }
 #concept.section::before{
   content:""; position:absolute; top:50%; left:50%; width:320px; height:320px;
   background:url("images/concept-bg.png") no-repeat center/contain;
-  opacity:.08; transform:translate(-50%,-50%);
-  filter:hue-rotate(170deg) saturate(150%) brightness(1.1);
+  opacity:.08; transform:translate(-50%,-50%); filter:hue-rotate(170deg) saturate(150%) brightness(1.1);
   pointer-events:none; z-index:0;
 }
 #concept.section > *{ position:relative; z-index:1; }
 
 /* ===== gallery CTA ===== */
 #gallery a[href*="instagram.com/pieces_hairsalon"]{
-  display:inline-block; background:var(--accent); color:#fff !important;
-  border:none; border-radius:30px; padding:12px 24px; font-weight:500; font-size:15px;
-  text-decoration:none; transition:all .25s ease;
+  display:inline-block; background:var(--accent); color:#fff !important; border:none;
+  border-radius:30px; padding:12px 24px; font-weight:500; font-size:15px; text-decoration:none; transition:all .25s ease;
 }
 #gallery a[href*="instagram.com/pieces_hairsalon"]:hover{ background:var(--accent-darker); }
 
@@ -208,12 +146,8 @@ html{ scroll-behavior:smooth; scroll-padding-top:0; }
 
 /* ===== staff トップの文字色を黒で統一 ===== */
 #staff.section { color:#000; }
-#staff.section h2,
-#staff.section p,
-#staff.section span,
-#staff.section .card,
-#staff.section .card p,
-#staff.section .card span { color:#000 !important; }
+#staff.section h2, #staff.section p, #staff.section span,
+#staff.section .card, #staff.section .card p, #staff.section .card span { color:#000 !important; }
 
 /* ===== フッター ===== */
 footer{
@@ -224,71 +158,18 @@ footer a{ color:#fff; text-decoration:underline; }
 
 /* ===== スマホ調整 ===== */
 @media (max-width:720px){
-  :root{ --headerH:72px; } /* stickyヘッダーが低くなる想定 */
-
+  :root{ --headerH:72px; --anchorOffset:-8px; } /* モバイルは少し弱めに */
   .nav{ flex-wrap:wrap; align-items:flex-start; height:auto; padding:8px 12px; }
   .brand{ flex:1 0 100%; gap:10px; margin-left:0; }
   .brand img{ max-height:56px; }
   .brand span{ font-size:20px; }
-  .menu{
-    flex:1 0 100%; display:flex; flex-wrap:wrap; gap:14px;
-    margin-top:6px; justify-content:flex-start;
-  }
-
-  /* ★Heroスマホ最適化 */
-  .hero{ min-height:calc(100svh - var(--headerH)); }
-  .hero-kicker{ letter-spacing:.14em; }
-  .hero-sub{ margin:.7em auto 1.2em; }
-  .hero-cta{ padding:.72em 1.2em; }
-}
-
-/* iOSノッチの安全域 */
-@supports(padding:max(0px)){
-  .hero-text{ padding-bottom:calc(clamp(16px,3vw,40px) + env(safe-area-inset-bottom)); }
+  .menu{ flex:1 0 100%; display:flex; flex-wrap:wrap; gap:14px; margin-top:6px; justify-content:flex-start; }
+  .cards{ grid-template-columns:1fr; }
+  .cta-row{ justify-content:center; }
 }
 
 /* ===== アクセシビリティ ===== */
 a:focus,button:focus,.btn:focus{
   outline:3px solid color-mix(in srgb, var(--accent) 50%, #fff 50%);
   outline-offset:2px;
-}/* ===== Hero ロゴ強調（上書き） ===== */
-.hero-logo{
-  /* 旧: clamp(180px, 28vw, 360px) → 大幅UP */
-  width: clamp(240px, 40vw, 560px);
 }
-
-.hero-kicker{
-  /* ロゴが主役になるように控えめサイズ＆余白圧縮 */
-  font-size: clamp(12px, 1.6vw, 18px);
-  margin: 0 0 .4em;
-  letter-spacing: .16em;
-}
-
-.hero-sub{
-  /* ロゴ直下の説明も少し控えめに */
-  font-size: clamp(13px, 1.9vw, 17px);
-  margin: .6em auto 1.1em;
-  max-width: 36em;
-}
-
-/* デスクトップではさらに大きく（スマホは据え置き） */
-@media (min-width: 960px){
-  .hero-logo{ width: min(52vw, 600px); }
-}
-
-/* ロゴを大きくしても可読性が落ちないように暗幕を少し強める */
-.hero-overlay{
-  background: linear-gradient(180deg, rgba(0,0,0,.42), rgba(0,0,0,.52));
-}/* ===== hero-kicker（KASHIWA · HAIR SALON） ===== */
-.hero-kicker {
-  font-family: "Josefin Sans", "Noto Sans JP", sans-serif;
-  font-weight: 300; /* 軽くて優しい印象 */
-  font-size: clamp(14px, 1.8vw, 20px);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.92);
-  margin-bottom: 0.5em;
-}
-
-/* Google Fonts読み込み（head内に追加） */
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400&display=swap');

@@ -32,12 +32,6 @@
   <link rel="icon" href="images/logo.jpeg" />
   <meta name="format-detection" content="telephone=no" />
   <link rel="stylesheet" href="styles.css" />
-
-  <style>
-    /* 口コミボタン行の調整 */
-    #reviews-actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
-    #reviews-actions .btn{ min-width:160px; }
-  </style>
 </head>
 
 <body>
@@ -60,31 +54,28 @@
   </div>
 </header>
 
-<!-- ===== MAIN CONTENT ===== -->
 <main id="top" class="wrap">
-
-  <!-- ===== HERO ===== -->
-  <section id="hero" class="hero" aria-label="pieces Kashiwa Hair Salon">
-    <!-- 背景スライドショー（hero1〜3対応） -->
-    <div class="slideshow">
-      <img src="images/hero1.jpg" class="active" alt="">
-      <img src="images/hero2.jpg" alt="">
-      <img src="images/hero3.jpg" alt="">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-txt">
+      <h1>貴方の綺麗を引き出す<br>お悩み解決に特化した<br>パーソナルサロン</h1>
+      <p class="muted">柏駅徒歩10分　初めての方も安心のカウンセリングと翌日から扱いやすいヘアをご提案</p>
+      <div class="cta cta-row">
+        <a class="btn fill" href="https://line.me/R/ti/p/@vtd8113w" target="_blank" rel="noopener">LINEで予約</a>
+        <a class="btn" href="tel:0471938458">電話 04-7193-8458</a>
+        <a class="btn" href="https://www.instagram.com/pieces_hairsalon" target="_blank" rel="noopener">@pieces_hairsalon</a>
+      </div>
     </div>
 
-    <!-- オーバーレイ（文字可読性確保） -->
-    <div class="hero-overlay" aria-hidden="true"></div>
-
-    <!-- テキストコンテンツ -->
-    <div class="hero-text wrap">
-      <p class="hero-kicker">KASHIWA · HAIR SALON</p>
-      <img src="images/pieces-logo-white.png" alt="pieces ピーシーズ" class="hero-logo">
-      <p class="hero-sub">千葉県柏市の悩み解決美容室「pieces」</p>
-      <a href="#concept" class="hero-cta" aria-label="くわしく見る">see more</a>
+    <!-- スライドショー -->
+    <div class="hero-img slideshow">
+      <img src="images/hero1.jpeg" alt="店内1" class="active">
+      <img src="images/hero2.jpeg" alt="店内2">
+      <img src="images/hero3.jpeg" alt="店内3">
     </div>
   </section>
 
-  <!-- ===== CONCEPT ===== -->
+  <!-- CONCEPT -->
   <section id="concept" class="section alt">
     <h2>concept</h2>
     <p>~ 髪に向き合うことであなたの人生の一部を彩る ~<br>
@@ -94,7 +85,7 @@
       あなたの人生を彩るパズルの一片でありたい。それが pieces です。</p>
   </section>
 
-  <!-- ===== STAFF ===== -->
+  <!-- STAFF -->
   <section id="staff" class="section alt">
     <h2>staff</h2>
     <div class="cards staff">
@@ -111,7 +102,7 @@
     </div>
   </section>
 
-  <!-- ===== BLOG（トップ3件） ===== -->
+  <!-- BLOG（トップ3件） -->
   <section id="blog" class="section">
     <h2>blog</h2>
     <div id="blog-list" class="cards"></div>
@@ -120,7 +111,7 @@
     </p>
   </section>
 
-  <!-- ===== REVIEWS（Google 口コミ） ===== -->
+  <!-- REVIEWS（Google 口コミ） -->
   <section id="reviews" class="section">
     <h2>reviews</h2>
     <div id="reviews-list" class="cards"></div>
@@ -131,7 +122,7 @@
     </div>
   </section>
 
-  <!-- ===== MENU ===== -->
+  <!-- MENU -->
   <section id="menu" class="section">
     <h2>menu</h2>
     <div class="cards">
@@ -158,7 +149,7 @@
     </div>
   </section>
 
-  <!-- ===== GALLERY ===== -->
+  <!-- GALLERY -->
   <section id="gallery" class="section" aria-label="ギャラリー">
     <h2>gallery</h2>
     <p class="small muted" style="margin-bottom:14px; text-align:center;">
@@ -180,14 +171,14 @@
     </div>
   </section>
 
-  <!-- ===== CONTACT ===== -->
+  <!-- CONTACT -->
   <section id="contact" class="section alt">
     <h2>contact</h2>
     <p>ご質問・ご相談はLINEが便利です。</p>
     <a class="btn fill" href="https://line.me/R/ti/p/@vtd8113w" target="_blank" rel="noopener">LINEで予約</a>
   </section>
 
-  <!-- ===== ACCESS ===== -->
+  <!-- ACCESS -->
   <section id="access" class="section">
     <h2>access</h2>
     <p>〒277-0011 千葉県柏市東上町1-10 丸ビル柏銀座 2F<br>柏駅 徒歩約10分</p>
@@ -200,19 +191,20 @@
   <div class="wrap"><p>© pieces hair.</p></div>
 </footer>
 
-<!-- ===== SCRIPTS ===== -->
+<!-- ===== Scripts ===== -->
 <script src="https://snapwidget.com/js/snapwidget.js" defer></script>
 
-<!-- microCMS -->
+<!-- microCMS（トップ3件） -->
 <script>
-  const MICROCMS_KEY = "OD6b2kmbP5JywTqJgejkTfJrwnKUJpLV03fU";
+  const MICROCMS_KEY = "OD6b2kmbP5JywTqJgejkTfJrwnKUJpLV03fU"; // 読み取りキーのみ
   const BLOG_ENDPOINT = "https://pieces.microcms.io/api/v1/blog";
+
   async function loadHomeBlog(){
     try{
       const res = await fetch(`${BLOG_ENDPOINT}?limit=3&orders=-publishedAt`, {
         headers: { "X-MICROCMS-API-KEY": MICROCMS_KEY }
       });
-      if(!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       const toCard = (p) => `
         <a class="card" href="blog/post.html?id=${p.id}" style="text-decoration:none;color:inherit">
@@ -231,32 +223,32 @@
   loadHomeBlog();
 </script>
 
-<!-- スライドショー -->
+<!-- スライドショー（2.5秒） -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const slides = document.querySelectorAll('.slideshow img');
     if (!slides.length) return;
     slides[0].classList.add('active');
-    let i = 0;
+    let idx = 0;
     setInterval(() => {
-      slides[i].classList.remove('active');
-      i = (i + 1) % slides.length;
-      slides[i].classList.add('active');
-    }, 4000);
+      slides[idx].classList.remove('active');
+      idx = (idx + 1) % slides.length;
+      slides[idx].classList.add('active');
+    }, 2500);
   });
 </script>
 
-<!-- ヘッダー高さをCSS変数に -->
+<!-- ヘッダー高さをCSS変数へ反映（全ページで統一挙動に必須） -->
 <script>
-  function setHeaderVars(){
+  function setHeaderOffset(){
     const h = (document.querySelector('.header')?.offsetHeight || 72);
     document.documentElement.style.setProperty('--headerH', h + 'px');
   }
-  window.addEventListener('load', setHeaderVars);
-  window.addEventListener('resize', setHeaderVars);
+  window.addEventListener('load', setHeaderOffset);
+  window.addEventListener('resize', setHeaderOffset);
 </script>
 
-<!-- Instagram定期リロード -->
+<!-- Instagramを定期リロード（キャッシュ回避） -->
 <script>
   (function autoRefreshIG(){
     const MINUTES = 10;
@@ -267,49 +259,100 @@
   })();
 </script>
 
-<!-- Googleレビュー取得 -->
+<!-- Google レビュー（取得は最大5件なので、"さらに見る"はGoogle側へ） -->
 <script>
   const GOOGLE_API_KEY = "AIzaSyCfZZAP0_T3ABrTXjBdZAdcCbvvdXBwIKU";
-  const PLACE_ID = "ChIJN6a9nFSdGGARkhoyfbQBhmo";
+  const PLACE_ID       = "ChIJN6a9nFSdGGARkhoyfbQBhmo";
+
+  let allReviews = [];
   const stars = n => '★'.repeat(Math.round(n)) + '☆'.repeat(5 - Math.round(n));
 
-  function renderReviews(place){
-    const list = document.getElementById('reviews-list');
-    const note = document.getElementById('reviews-note');
-    const more = document.getElementById('btn-more-reviews');
-    const write = document.getElementById('btn-write-review');
-    write.href = `https://search.google.com/local/writereview?placeid=${PLACE_ID}`;
-    if(!place.reviews?.length){
-      list.innerHTML = '<p class="muted">口コミはまだありません。</p>';
+  function reviewsToHTML(arr){
+    return arr.map(r => {
+      const ts = r.time ? new Date(r.time * 1000) : null;
+      const dateStr = ts ? ts.toLocaleDateString('ja-JP') : (r.relative_time_description || '');
+      return `
+        <div class="card" style="display:block">
+          <div style="font-weight:600;margin-bottom:6px">
+            ${stars(r.rating)} <span class="small muted">${Number(r.rating).toFixed(1)}/5</span>
+          </div>
+          <p style="margin:8px 0;color:#000">${(r.text || '').replace(/\n/g,'<br>')}</p>
+          <p class="small muted">by ${r.author_name ?? 'User'}・${dateStr}</p>
+        </div>`;
+    }).join('');
+  }
+
+  function renderReviews(details){
+    const list   = document.getElementById('reviews-list');
+    const note   = document.getElementById('reviews-note');
+    const write  = document.getElementById('btn-write-review');
+    const more   = document.getElementById('btn-more-reviews');
+
+    write.href = `https://search.google.com/local/writereview?placeid=${encodeURIComponent(PLACE_ID)}`;
+
+    allReviews = (details.reviews || []);
+    if (!allReviews.length){
+      list.innerHTML = '<p class="muted">まだ表示できる口コミがありません。</p>';
+      note.textContent = '';
+      more.style.display = 'none';
       return;
     }
-    list.innerHTML = place.reviews.map(r=>{
-      const d = r.time ? new Date(r.time*1000).toLocaleDateString('ja-JP') : '';
-      return `<div class="card">
-        <div>${stars(r.rating)} <span class="small muted">${r.rating.toFixed(1)}/5</span></div>
-        <p>${r.text || ''}</p>
-        <p class="small muted">by ${r.author_name || 'User'}・${d}</p>
-      </div>`;
-    }).join('');
-    if(place.user_ratings_total > place.reviews.length){
-      more.style.display='';
-      more.onclick=()=>location.href=`https://search.google.com/local/reviews?placeid=${PLACE_ID}`;
+    list.classList.add('blog-list');
+    list.innerHTML = reviewsToHTML(allReviews);
+
+    const total = Number(details.user_ratings_total || 0);
+    if (total > allReviews.length){
+      more.style.display = '';
+      more.textContent = 'Googleでさらに見る';
+      more.onclick = () => { location.href = `https://search.google.com/local/reviews?placeid=${encodeURIComponent(PLACE_ID)}`; };
+    } else {
+      more.style.display = 'none';
     }
-    note.textContent=`Googleレビュー 平均 ${place.rating.toFixed(1)}（${place.user_ratings_total}件）`;
+
+    if (details.rating && details.user_ratings_total){
+      note.textContent = `Googleレビュー 平均 ${Number(details.rating).toFixed(1)}（${details.user_ratings_total}件）`;
+    }
   }
 
   function initReviews(){
-    const svc=new google.maps.places.PlacesService(document.createElement('div'));
-    svc.getDetails({placeId:PLACE_ID,fields:['rating','user_ratings_total','reviews']},(place,status)=>{
-      if(status==='OK') renderReviews(place);
-    });
+    const svc = new google.maps.places.PlacesService(document.createElement('div'));
+    svc.getDetails(
+      { placeId: PLACE_ID, fields: ['rating','user_ratings_total','reviews'] },
+      (place, status) => {
+        if (status !== google.maps.places.PlacesServiceStatus.OK){
+          console.error('Places getDetails error:', status);
+          document.getElementById('reviews-list').innerHTML = '<p class="muted">口コミの取得に失敗しました。</p>';
+          document.getElementById('btn-more-reviews').style.display = 'none';
+          return;
+        }
+        renderReviews(place);
+      }
+    );
   }
+
   (function loadMaps(){
-    const s=document.createElement('script');
-    s.src=`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places&language=ja&callback=initReviews`;
-    s.async=true; s.defer=true;
+    const s = document.createElement('script');
+    s.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(GOOGLE_API_KEY)}&libraries=places&language=ja&callback=initReviews`;
+    s.async = true; s.defer = true;
     document.head.appendChild(s);
   })();
+</script>
+
+<!-- blog → index.html#reviews のとき、さらに上に寄せる補正 -->
+<script>
+  window.addEventListener("load", () => {
+    if (location.hash === "#reviews") {
+      requestAnimationFrame(() => {
+        const el = document.querySelector("#reviews");
+        if (!el) return;
+        const headerH = document.querySelector(".header")?.offsetHeight || 80;
+        /* ここが追加補正。共通の scroll-margin-top より少し上に寄せる */
+        const extra = 70; // もっと上にしたければ数値を大きく
+        const y = el.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: y - headerH - extra, behavior: "auto" });
+      });
+    }
+  });
 </script>
 </body>
 </html>
