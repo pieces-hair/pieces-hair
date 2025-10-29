@@ -270,4 +270,32 @@ a:focus,button:focus,.btn:focus{
     margin-top: 4px;
     box-shadow: 0 8px 22px rgba(0,0,0,.06);
   }
+}/* === HERO 見出しのサイズ調整（存在感アップ） === */
+.hero h1{
+  font-size: clamp(32px, 4.4vw, 48px); /* 少し大きく */
+  line-height: 1.25;                   /* 行間はやや詰めて塊感を出す */
+  letter-spacing: 0.01em;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+/* サブ見出しなどの段落も少し余裕を持たせる */
+.hero p{
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.9;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+
+/* スマホ時 */
+@media (max-width:720px){
+  .hero h1{
+    font-size: clamp(26px, 6vw, 34px); /* モバイルも見やすく */
+    line-height: 1.3;
+    margin-bottom: 12px;
+  }
+  .hero p{
+    font-size: clamp(14px, 3.8vw, 16px);
+    line-height: 1.8;
+  }
 }
