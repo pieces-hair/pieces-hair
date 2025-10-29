@@ -178,4 +178,96 @@ a:focus,button:focus,.btn:focus{
     object-fit: contain;   /* 全体を収める＝切れない */
     background:#fff;       /* 上下に余白が出る場合の下地 */
   }
+}/* =========================
+   HERO の余白とタイポ見直し
+   ========================= */
+
+/* PC基準：ゆったり・大きめ */
+.hero{
+  gap: 36px;                /* 要素間スペースを+8px */
+  padding: 96px 0 88px;     /* 上下の余白を拡張（72→96） */
+}
+
+.hero h1{
+  /* 画面幅に合わせてなめらかに可変：最小28px〜最大44px */
+  font-size: clamp(28px, 3.8vw, 44px);
+  line-height: 1.22;
+  letter-spacing: 0.02em;
+  margin: 0 0 14px;
+  font-weight: 700;
+}
+
+.hero .sub,         /* サブ見出し用クラスがあれば */
+.hero p.muted{      /* 既存の muted を併用している想定 */
+  font-size: clamp(14px, 1.35vw, 18px);
+  line-height: 1.9;
+  color: var(--muted);
+  max-width: 42ch;  /* 行幅を絞って読みやすく */
+  margin: 0 0 18px;
+}
+
+/* CTAは少し大きく／間隔広く */
+.hero .cta-row{
+  gap: 14px;
+  margin-top: 8px;
+}
+.hero .cta-row .btn,
+.hero .cta-row a{
+  padding: 14px 22px;       /* クリックしやすく */
+  font-size: 15.5px;
+  border-radius: 999px;     /* 丸さを強めてやさしい印象 */
+}
+
+/* スライドは“見せすぎない”＝文字が主役 */
+.slideshow{
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.06);
+  opacity: .96;             /* 少しだけ抑えて文字を主役に */
+}
+
+/* タブレット以下：余白を保ちつつ一段組に最適化 */
+@media (max-width: 980px){
+  .hero{
+    gap: 22px;
+    padding: 84px 0 72px;
+  }
+  .hero .sub,
+  .hero p.muted{
+    max-width: 48ch;
+  }
+}
+
+/* スマホ：指で触るUIを意識して“ゆるめ” */
+@media (max-width: 720px){
+  .hero{
+    padding: 68px 0 56px;
+    gap: 18px;
+  }
+  .hero h1{
+    font-size: clamp(24px, 7vw, 32px);
+    line-height: 1.24;
+    letter-spacing: 0.01em; /* つめ過ぎない */
+    margin-bottom: 8px;
+  }
+  .hero .sub,
+  .hero p.muted{
+    font-size: clamp(14px, 3.8vw, 16px);
+    line-height: 1.85;
+    max-width: 48ch;
+  }
+  .hero .cta-row{
+    gap: 10px;
+    justify-content: flex-start;
+  }
+  .hero .cta-row .btn,
+  .hero .cta-row a{
+    padding: 13px 18px;
+    font-size: 15px;
+  }
+  /* 画像は少し小ぶりに見せて、余白を確保 */
+  .slideshow{
+    aspect-ratio: 4 / 3;    /* 既存維持 */
+    margin-top: 4px;
+    box-shadow: 0 8px 22px rgba(0,0,0,.06);
+  }
 }
