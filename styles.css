@@ -172,4 +172,10 @@ footer a{ color:#fff; text-decoration:underline; }
 a:focus,button:focus,.btn:focus{
   outline:3px solid color-mix(in srgb, var(--accent) 50%, #fff 50%);
   outline-offset:2px;
+}/* === スマホ時は見切らせない（heroスライド） === */
+@media (max-width: 720px){
+  .slideshow img{
+    object-fit: contain;   /* 全体を収める＝切れない */
+    background:#fff;       /* 上下に余白が出る場合の下地 */
+  }
 }
