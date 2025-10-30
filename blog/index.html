@@ -62,9 +62,9 @@
       const note = document.getElementById("blog-note");
 
       try{
-        const res = await fetch(`${BLOG_ENDPOINT}?limit=50&orders=-publishedAt`, {
-          headers: { "X-MICROCMS-API-KEY": MICROCMS_KEY }
-        });
+        const res = await fetch(`${BLOG_ENDPOINT}?limit=100&orders=-publishedAt&filters=publishedAt[exists]`, {
+  headers: { "X-MICROCMS-API-KEY": MICROCMS_KEY }
+});
         if (!res.ok){
           list.innerHTML = `<p class="muted">読み込みに失敗しました（HTTP ${res.status}）。</p>`;
           console.error("microCMS HTTP error:", res.status, await res.text());
